@@ -52,6 +52,10 @@ public class Game {
         mazzoCarte.add(new Carta("Super stella: 1v1 vinci sempre", "LEGGENDARIO"));
     }
 
+    public void ciaoPietro(){
+        //ciao pietro
+    }
+    
     public List<Carta> getMazzoMischiato() {
         return mazzoMischiato;
     }
