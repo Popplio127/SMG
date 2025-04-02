@@ -54,6 +54,7 @@ public class Game {
 
     public void ciaoPietro(){
         //ciao pietro
+        //LO VEDI IL MIO???     
     }
     
     public List<Carta> getMazzoMischiato() {
