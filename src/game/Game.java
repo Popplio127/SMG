@@ -85,8 +85,9 @@ public class Game {
     }
 
     public int tiraDado() {
-        numeroDado = numeroDado + (int) Math.round(Math.random() * 5 + 1);
-        return numeroDado;
+        int n = (int) Math.round(Math.random() * 5 + 1);
+        numeroDado = numeroDado + n;
+        return n;
     }
 
     public int getNumeroDado() {
@@ -106,7 +107,7 @@ public class Game {
 
     public void fineTurno() {
         pesca();
-        numeroDado=0;
+        numeroDado = 0;
     }
 
     public void pesca() {
@@ -135,17 +136,18 @@ public class Game {
     }
 
     public void faiQuelloCheLaCartaTiHaDettoDiFare(String nome) {
+        int lancioDado;
         switch (nome) {
             case "Aggiungi 1 al lancio del dado":
                 numeroDado++;
                 System.out.println("Aggiungi 1 al lancio del dado.");
                 break;
             case "Aggiungi 2 al lancio del dado":
-                numeroDado+=2;
+                numeroDado += 2;
                 System.out.println("Aggiungi 2 al lancio del dado.");
                 break;
             case "Aggiungi 3 al lancio del dado":
-                numeroDado+=3;
+                numeroDado += 3;
                 System.out.println("Aggiungi 3 al lancio del dado.");
                 break;
             case "Muovi orizzontale la pedina di 1":
@@ -167,22 +169,38 @@ public class Game {
                 System.out.println("Muovi la pedina avversaria di -1.");
                 break;
             case "Ritira dado":
-                numeroDado=0;
-                tiraDado();
+                numeroDado = 0;
+                lancioDado = tiraDado();
+                ui.showMessage(lancioDado + "");
                 System.out.println("Ritira il dado.");
                 break;
             case "Se dado <= 3 fai x3, altrimenti x0 (Disabilitata se hai già lanciato il dado)":
+                ui.setIsDadoTirato(true);
+                lancioDado = tiraDado();
+                ui.showMessage(lancioDado + "");
+                if (lancioDado <= 3) {
+                    numeroDado *= 3;
+                } else {
+                    numeroDado = 0;
+                }
                 System.out.println("Se il dado è minore o uguale a 3, moltiplica per 3, altrimenti per 0.");
                 break;
             case "Muovi orizzontalmente una pedina come vuoi":
                 System.out.println("Muovi orizzontalmente una pedina come vuoi.");
                 break;
             case "Tira più dadi insieme":
-                tiraDado();
-                tiraDado();
+                lancioDado = tiraDado();
+                ui.showMessage(lancioDado + "");
+                lancioDado = tiraDado();
+                ui.showMessage(lancioDado + "");
+                ui.setIsDadoTirato(true);
                 System.out.println("Tira più dadi insieme.");
                 break;
             case "Moltiplica punteggio dado x1.5 (Disabilitata se hai già lanciato il dado)":
+                lancioDado = tiraDado();
+                ui.showMessage(lancioDado + "");
+                numeroDado = (int) (numeroDado * 1.5);
+                ui.setIsDadoTirato(true);
                 System.out.println("Moltiplica il punteggio del dado per 1.5.");
                 break;
             case "Metti pedina ignorando limite":
@@ -208,9 +226,25 @@ public class Game {
                 System.out.println("Pesca fino a 5 carte.");
                 return;
             case "Se dado pari fai x2, se dispari x-1 (Disabilitata se hai già lanciato il dado)":
+                ui.setIsDadoTirato(true);
+                lancioDado = tiraDado();
+                ui.showMessage(lancioDado + "");
+                if (lancioDado % 2 == 0) {
+                    numeroDado *= 2;
+                } else {
+                    numeroDado *= -1;
+                }
                 System.out.println("Se il dado è pari moltiplica per 2, se dispari moltiplica per -1.");
                 break;
             case "Se dado dispari fai x2, se pari x-1 (Disabilitata se hai già lanciato il dado)":
+                ui.setIsDadoTirato(true);
+                lancioDado = tiraDado();
+                ui.showMessage(lancioDado + "");
+                if (lancioDado % 2 != 0) {
+                    numeroDado *= 2;
+                } else {
+                    numeroDado *= -1;
+                }
                 System.out.println("Se il dado è dispari moltiplica per 2, se pari moltiplica per -1.");
                 break;
             case "Dado x-1 e sull’avversario (Disabilitata se hai già lanciato il dado)":
