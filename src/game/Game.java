@@ -33,21 +33,29 @@ public class Game {
     }
 
     private void inizializzaMazzo() {
-        mazzoCarte.add(new Carta("Aggiungi vari numeri al lancio del dado", "RARO"));
-        mazzoCarte.add(new Carta("Muovi orizzontale vari numeri", "RARO"));
-        mazzoCarte.add(new Carta("Muovi orizzontalmente una pedina x dado (Disabilitata se hai già lanciato il dado)", "RARO"));
-        mazzoCarte.add(new Carta("-1 posizione pedina avversario", "RARO"));
-        mazzoCarte.add(new Carta("Ritira dado", "SUPER RARO"));
-        mazzoCarte.add(new Carta("Se dado <= 3 fai x3, altrimenti x0 (Disabilitata se hai già lanciato il dado)", "SUPER RARO"));
-        mazzoCarte.add(new Carta("Muovi orizzontalmente una pedina come vuoi", "SUPER RARO"));
-        mazzoCarte.add(new Carta("Tira più dadi insieme", "EPICO"));
-        mazzoCarte.add(new Carta("Moltiplica punteggio dado x1.5 (Disabilitata se hai già lanciato il dado)", "EPICO"));
-        mazzoCarte.add(new Carta("Metti pedina ignorando limite", "EPICO"));
-        mazzoCarte.add(new Carta("Scarta e ripesca tutto", "EPICO"));
-        mazzoCarte.add(new Carta("Pesca fino a 5", "MITICO"));
-        mazzoCarte.add(new Carta("Se dado pari fai x2, se dispari x-1 (Disabilitata se hai già lanciato il dado)", "MITICO"));
-        mazzoCarte.add(new Carta("Se dado dispari fai x2, se pari x-1 (Disabilitata se hai già lanciato il dado)", "MITICO"));
-        mazzoCarte.add(new Carta("Dado x-1 e sull’avversario (Disabilitata se hai già lanciato il dado)", "MITICO"));
+        for (int c = 0; c < 5; c++) {
+            mazzoCarte.add(new Carta("Aggiungi vari numeri al lancio del dado", "RARO"));
+            mazzoCarte.add(new Carta("Muovi orizzontale vari numeri", "RARO"));
+            mazzoCarte.add(new Carta("Muovi orizzontalmente una pedina x dado (Disabilitata se hai già lanciato il dado)", "RARO"));
+            mazzoCarte.add(new Carta("-1 posizione pedina avversario", "RARO"));
+        }
+        for (int c = 0; c < 4; c++) {
+            mazzoCarte.add(new Carta("Ritira dado", "SUPER RARO"));
+            mazzoCarte.add(new Carta("Se dado <= 3 fai x3, altrimenti x0 (Disabilitata se hai già lanciato il dado)", "SUPER RARO"));
+            mazzoCarte.add(new Carta("Muovi orizzontalmente una pedina come vuoi", "SUPER RARO"));
+        }
+        for (int c = 0; c < 3; c++) {
+            mazzoCarte.add(new Carta("Tira più dadi insieme", "EPICO"));
+            mazzoCarte.add(new Carta("Moltiplica punteggio dado x1.5 (Disabilitata se hai già lanciato il dado)", "EPICO"));
+            mazzoCarte.add(new Carta("Metti pedina ignorando limite", "EPICO"));
+            mazzoCarte.add(new Carta("Scarta e ripesca tutto", "EPICO"));
+        }
+        for (int c = 0; c < 2; c++) {
+            mazzoCarte.add(new Carta("Pesca fino a 5", "MITICO"));
+            mazzoCarte.add(new Carta("Se dado pari fai x2, se dispari x-1 (Disabilitata se hai già lanciato il dado)", "MITICO"));
+            mazzoCarte.add(new Carta("Se dado dispari fai x2, se pari x-1 (Disabilitata se hai già lanciato il dado)", "MITICO"));
+            mazzoCarte.add(new Carta("Dado x-1 e sull’avversario (Disabilitata se hai già lanciato il dado)", "MITICO"));
+        }
         mazzoCarte.add(new Carta("Riporta una pedina dell'avversario all’inizio", "LEGGENDARIO"));
         mazzoCarte.add(new Carta("Super stella: 1v1 vinci sempre", "LEGGENDARIO"));
     }
@@ -91,12 +99,15 @@ public class Game {
     }
 
     public void fineTurno() {
-        if (manoCarte.size() < 5) {
-            manoCarte.add(mazzoMischiato.remove(0));
-        }else{
-            System.out.println("Mano piena"); 
+        for (int c = 0; c < 5; c++) {
+            if (manoCarte.get(c).getRarita().equals("WIDAUTLEVEL")) {
+                manoCarte.remove(c);
+                manoCarte.add(mazzoMischiato.remove(0));
+                return;
+            } else {
+                System.out.println("Mano piena");
+            }
         }
-        
     }
 
     public String[][] getCampo() {
