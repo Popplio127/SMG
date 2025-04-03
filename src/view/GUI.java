@@ -138,8 +138,8 @@ public class GUI extends JFrame implements ActionListener, UI {
     private void controlloCarta(JButton bottoneSchiacciato) {
         for (int c = 0; c < 5; c++) {
             if (bottoneSchiacciato.equals(slotCarte[c])) {
-                System.out.println("Usato carta: " + bottoneSchiacciato.getText());
-                
+                //System.out.println("Usato carta: " + bottoneSchiacciato.getText());
+                game.faiQuelloCheLaCartaTiHaDettoDiFare(bottoneSchiacciato.getText());
             }
         }
     }
@@ -199,11 +199,15 @@ public class GUI extends JFrame implements ActionListener, UI {
                     slotCarte[i].setText(manoCarte.get(i).getQuelloCheLaCartaSaFare());
                     break;
                 case "WIDAUTLEVEL":
+                    slotCarte[i].setEnabled(false);
                     slotCarte[i].setBackground(null);
                     slotCarte[i].setText(manoCarte.get(i).getQuelloCheLaCartaSaFare());
                     break;
             }
             slotCarte[i].setForeground(Color.BLACK);
+            if(slotCarte[i].getText().contains("(Disabilitata se hai già lanciato il dado)") && isDadoTirato){
+                slotCarte[i].setEnabled(false);
+            }
         }
         tiraDado.setText("Tira dado: " + game.getNumeroDado());
         piazzaPedina.setText("Piazza pedina: " + game.getNumeroPedine());
