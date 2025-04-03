@@ -28,13 +28,15 @@ public class GUI extends JFrame implements ActionListener, UI {
     private boolean isPiazzaPedinaMossaPressed = false;
 
     public GUI(Game game) {
+        Dimension grandezzaSchermo = Toolkit.getDefaultToolkit().getScreenSize();
         campo = new JButton[RIGA][COLONNA];
         sottoCampo = new JPanel(new GridLayout(RIGA, COLONNA));
         menuScelte = new JPanel(new GridLayout(8, 1));
         slotCarte = new JButton[5];
         this.game = game;
+        menuScelte.setPreferredSize(new Dimension((int) grandezzaSchermo.getWidth() - 1000, (int) grandezzaSchermo.getHeight() - 600));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(900, 1000);
+        setSize((int) grandezzaSchermo.getWidth(), (int) grandezzaSchermo.getHeight());
         setResizable(false);
         setLayout(new BorderLayout(RIGA, COLONNA));
         this.add(sottoCampo, BorderLayout.CENTER);
@@ -65,7 +67,6 @@ public class GUI extends JFrame implements ActionListener, UI {
         fineTurno.addActionListener(this);
         fineTurno.setEnabled(false);
         menuScelte.add(fineTurno);
-        showBoard(game.getCampo(), game.getMazzoMischiato());
         setVisible(true);
     }
 
