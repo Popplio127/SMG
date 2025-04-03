@@ -161,6 +161,11 @@ public class GUI extends JFrame implements ActionListener, UI {
     }
 
     @Override
+    public void setIsDadoTirato(boolean isDadoTirato) {
+        this.isDadoTirato = isDadoTirato;
+    }
+
+    @Override
     public void showBoard(String[][] board, java.util.List<Carta> manoCarte) {
         for (int i = 0; i < RIGA; i++) {
             for (int ii = 0; ii < COLONNA; ii++) {
