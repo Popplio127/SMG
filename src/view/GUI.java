@@ -7,6 +7,7 @@ import game.UI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import javax.swing.*;
 
 public class GUI extends JFrame implements ActionListener, UI {
@@ -129,8 +130,18 @@ public class GUI extends JFrame implements ActionListener, UI {
             game.fineTurno();
             isDadoTirato = false;
         }
+        controlloCarta(bottoneSchiacciato);
         System.out.println("ho schisciato la piadina " + (bottoneSchiacciato.getY() / bottoneSchiacciato.getHeight()) + " , " + (bottoneSchiacciato.getX() / bottoneSchiacciato.getWidth()));
         showBoard(game.getCampo(), game.getManoCarte());
+    }
+
+    private void controlloCarta(JButton bottoneSchiacciato) {
+        for (int c = 0; c < 5; c++) {
+            if (bottoneSchiacciato.equals(slotCarte[c])) {
+                System.out.println("Usato carta: " + bottoneSchiacciato.getText());
+                
+            }
+        }
     }
 
     public void bloccaPulsanti() {
@@ -163,22 +174,27 @@ public class GUI extends JFrame implements ActionListener, UI {
         for (int i = 0; i < 5; i++) {
             switch (manoCarte.get(i).getRarita()) {
                 case "RARO":
+                    slotCarte[i].setEnabled(true);
                     slotCarte[i].setBackground(Color.GREEN);
                     slotCarte[i].setText(manoCarte.get(i).getQuelloCheLaCartaSaFare());
                     break;
                 case "SUPER RARO":
+                    slotCarte[i].setEnabled(true);
                     slotCarte[i].setBackground(Color.CYAN);
                     slotCarte[i].setText(manoCarte.get(i).getQuelloCheLaCartaSaFare());
                     break;
                 case "EPICO":
+                    slotCarte[i].setEnabled(true);
                     slotCarte[i].setBackground(Color.MAGENTA);
                     slotCarte[i].setText(manoCarte.get(i).getQuelloCheLaCartaSaFare());
                     break;
                 case "MITICO":
+                    slotCarte[i].setEnabled(true);
                     slotCarte[i].setBackground(Color.RED);
                     slotCarte[i].setText(manoCarte.get(i).getQuelloCheLaCartaSaFare());
                     break;
                 case "LEGGENDARIO":
+                    slotCarte[i].setEnabled(true);
                     slotCarte[i].setBackground(Color.YELLOW);
                     slotCarte[i].setText(manoCarte.get(i).getQuelloCheLaCartaSaFare());
                     break;
