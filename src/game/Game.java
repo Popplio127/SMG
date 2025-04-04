@@ -172,6 +172,7 @@ public class Game {
                 numeroDado = 0;
                 lancioDado = tiraDado();
                 ui.showMessage(lancioDado + "");
+                ui.setIsDadoTirato(true);
                 System.out.println("Ritira il dado.");
                 break;
             case "Se dado <= 3 fai x3, altrimenti x0 (Disabilitata se hai già lanciato il dado)":
