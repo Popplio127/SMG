@@ -121,6 +121,9 @@ public class Game {
                 } else {
                     System.out.println("Mano piena");
                 }
+            }catch (IndexOutOfBoundsException ex){
+                inizializzaMazzo();
+                mischiaMazzo();
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
