@@ -3,7 +3,6 @@ package view;
 import dominio.Carta;
 import dominio.Pedina;
 import game.Game;
-import game.UI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
