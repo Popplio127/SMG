@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import servizi.GameInterface;
 
 public class Game {
 
-    private GameInterface gameInterface;
+    private UI gameInterface;
     private String[][] campo;
     private List<Carta> manoCarte = new ArrayList<>();
     private List<Carta> mazzoCarte;
@@ -76,7 +75,7 @@ public class Game {
         Collections.shuffle(mazzoMischiato);
     }
 
-    public void setUi(GameInterface gameInterface) {
+    public void setUi(UI gameInterface) {
         this.gameInterface = gameInterface;
     }
 
