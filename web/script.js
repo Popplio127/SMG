@@ -10,10 +10,16 @@ let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
 
 const nome = prompt("Inserire il nome");
-const socket = new WebSocket('ws://localhost:8080/smgweb/game/' + nome);
+const socket = new WebSocket('ws://localhost:8080/smgweb/' + nome);
 
 socket.addEventListener('open', () => {
-    console.log(nome + "si è connesso!");
+    console.log(nome + " si è connesso!");
+    socket.send(nome);
+    alert(nome + " ti sei connesso!");
+});
+
+socket.addEventListener('message', event => {
+    alert(event.data);
 });
 
 // Inizializza griglia
