@@ -18,8 +18,10 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.core.MediaType;
 
 @ServerEndpoint("/{username}")
 public class GameInterface implements UI {
@@ -92,6 +94,12 @@ public class GameInterface implements UI {
         });
     }
 
+    @POST
+    @Consumes("fine")
+    public void fineTurno(Session session){
+        game.fineTurno();
+    } 
+    
     @POST
     @Override
     public void makeMove() {
