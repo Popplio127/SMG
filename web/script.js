@@ -78,7 +78,7 @@ function onCellClick(e) {
     const col = +e.target.dataset.col;
     console.log(`Hai cliccato sulla cella: ${row}, ${col}`);
     if (isPiazzaPedinaPressed) {
-        e.target.textContent = "🟢"; // Simula una pedina
+        e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
         bloccaCampo();
         isPiazzaPedinaPressed = false;
     }
