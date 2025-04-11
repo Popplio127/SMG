@@ -8,6 +8,14 @@ const fineTurnoBtn = document.getElementById("fineTurno");
 let campo = [];
 let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
+
+const nome = prompt("Inserire il nome");
+const socket = new WebSocket('ws://localhost:8080/smgweb/game/' + nome);
+
+socket.addEventListener('open', () => {
+    console.log(nome + "si è connesso!");
+});
+
 // Inizializza griglia
 for (let i = 0; i < RIGA; i++) {
     campo[i] = [];
