@@ -20,8 +20,8 @@ body {
 }
 
 #campo {
-    transform: scale(1.8); /* 1.5x più grande */
-    transform-origin: top center; /* opzionale: punto da cui scala */
+    transform: scale(1.8);
+    transform-origin: top center;
     display: grid;
     grid-template-rows: repeat(15, 40px);
     grid-template-columns: repeat(8, 40px);

@@ -39,6 +39,7 @@ tiraDadoBtn.addEventListener("click", () => {
     alert("Hai tirato il dado!");
     fineTurnoBtn.disabled = false;
 });
+
 piazzaPedinaBtn.addEventListener("click", () => {
     isPiazzaPedinaPressed = true;
     // Attiva solo le celle della prima riga
@@ -48,12 +49,14 @@ piazzaPedinaBtn.addEventListener("click", () => {
     }
     tiraDadoBtn.disabled = false;
 });
+
 fineTurnoBtn.addEventListener("click", () => {
     isDadoTirato = false;
     // fetch a /api/fineTurno o simile
     alert("Turno finito.");
     fineTurnoBtn.disabled = true;
 });
+
 // Gestione click su celle
 function onCellClick(e) {
     const row = +e.target.dataset.row;

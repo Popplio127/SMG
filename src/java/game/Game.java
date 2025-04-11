@@ -1,16 +1,16 @@
 package game;
 
-import view.UI;
 import dominio.Carta;
 import dominio.Pedina;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import servizi.GameInterface;
 
 public class Game {
 
-    private UI ui;
+    private GameInterface gameInterface;
     private String[][] campo;
     private List<Carta> manoCarte = new ArrayList<>();
     private List<Carta> mazzoCarte;
@@ -76,8 +76,8 @@ public class Game {
         Collections.shuffle(mazzoMischiato);
     }
 
-    public void setUi(UI ui) {
-        this.ui = ui;
+    public void setUi(GameInterface gameInterface) {
+        this.gameInterface = gameInterface;
     }
 
     public void spostaPedina(Pedina pedinaPrecedente, Pedina pedinaAttuale) {
@@ -122,7 +122,7 @@ public class Game {
                 } else {
                     System.out.println("Mano piena");
                 }
-            }catch (IndexOutOfBoundsException ex){
+            } catch (IndexOutOfBoundsException ex) {
                 inizializzaMazzo();
                 mischiaMazzo();
             } catch (Exception ex) {
@@ -175,14 +175,14 @@ public class Game {
             case "Ritira dado":
                 numeroDado = 0;
                 lancioDado = tiraDado();
-                ui.showMessage(lancioDado + "");
-                ui.setIsDadoTirato(true);
+                gameInterface.showMessage(lancioDado + "");
+                gameInterface.setIsDadoTirato(true);
                 System.out.println("Ritira il dado.");
                 break;
             case "Se dado <= 3 fai x3, altrimenti x0 (Disabilitata se hai già lanciato il dado)":
-                ui.setIsDadoTirato(true);
+                gameInterface.setIsDadoTirato(true);
                 lancioDado = tiraDado();
-                ui.showMessage(lancioDado + "");
+                gameInterface.showMessage(lancioDado + "");
                 if (lancioDado <= 3) {
                     numeroDado *= 3;
                 } else {
@@ -195,17 +195,17 @@ public class Game {
                 break;
             case "Tira più dadi insieme":
                 lancioDado = tiraDado();
-                ui.showMessage(lancioDado + "");
+                gameInterface.showMessage(lancioDado + "");
                 lancioDado = tiraDado();
-                ui.showMessage(lancioDado + "");
-                ui.setIsDadoTirato(true);
+                gameInterface.showMessage(lancioDado + "");
+                gameInterface.setIsDadoTirato(true);
                 System.out.println("Tira più dadi insieme.");
                 break;
             case "Moltiplica punteggio dado x1.5 (Disabilitata se hai già lanciato il dado)":
                 lancioDado = tiraDado();
-                ui.showMessage(lancioDado + "");
+                gameInterface.showMessage(lancioDado + "");
                 numeroDado = (int) (numeroDado * 1.5);
-                ui.setIsDadoTirato(true);
+                gameInterface.setIsDadoTirato(true);
                 System.out.println("Moltiplica il punteggio del dado per 1.5.");
                 break;
             case "Metti pedina ignorando limite":
@@ -231,9 +231,9 @@ public class Game {
                 System.out.println("Pesca fino a 5 carte.");
                 return;
             case "Se dado pari fai x2, se dispari x-1 (Disabilitata se hai già lanciato il dado)":
-                ui.setIsDadoTirato(true);
+                gameInterface.setIsDadoTirato(true);
                 lancioDado = tiraDado();
-                ui.showMessage(lancioDado + "");
+                gameInterface.showMessage(lancioDado + "");
                 if (lancioDado % 2 == 0) {
                     numeroDado *= 2;
                 } else {
@@ -242,9 +242,9 @@ public class Game {
                 System.out.println("Se il dado è pari moltiplica per 2, se dispari moltiplica per -1.");
                 break;
             case "Se dado dispari fai x2, se pari x-1 (Disabilitata se hai già lanciato il dado)":
-                ui.setIsDadoTirato(true);
+                gameInterface.setIsDadoTirato(true);
                 lancioDado = tiraDado();
-                ui.showMessage(lancioDado + "");
+                gameInterface.showMessage(lancioDado + "");
                 if (lancioDado % 2 != 0) {
                     numeroDado *= 2;
                 } else {
