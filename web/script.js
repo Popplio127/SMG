@@ -8,20 +8,16 @@ const fineTurnoBtn = document.getElementById("fineTurno");
 let campo = [];
 let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
-
 const nome = prompt("Inserire il nome");
 const socket = new WebSocket('ws://localhost:8080/smgweb/' + nome);
-
 socket.addEventListener('open', () => {
     console.log(nome + " si è connesso!");
     socket.send(nome);
     alert(nome + " ti sei connesso!");
 });
-
 socket.addEventListener('message', event => {
     alert(event.data);
 });
-
 // Inizializza griglia
 for (let i = 0; i < RIGA; i++) {
     campo[i] = [];
@@ -53,7 +49,6 @@ tiraDadoBtn.addEventListener("click", () => {
     alert("Hai tirato il dado!");
     fineTurnoBtn.disabled = false;
 });
-
 piazzaPedinaBtn.addEventListener("click", () => {
     isPiazzaPedinaPressed = true;
     // Attiva solo le celle della prima riga
@@ -63,22 +58,39 @@ piazzaPedinaBtn.addEventListener("click", () => {
     }
     tiraDadoBtn.disabled = false;
 });
-
 fineTurnoBtn.addEventListener("click", () => {
     isDadoTirato = false;
     // fetch a /api/fineTurno o simile
-    fetch("http://localhost:8080/smgweb/",{method:"POST",headers:{"content-type":"fine"}});
+    fetch("http://localhost:8080/smgweb/", {method: "POST", headers: {"content-type": "fine"}});
     alert("Turno finito.");
     fineTurnoBtn.disabled = true;
 });
-
 // Gestione click su celle
 function onCellClick(e) {
     const row = +e.target.dataset.row;
     const col = +e.target.dataset.col;
     console.log(`Hai cliccato sulla cella: ${row}, ${col}`);
     if (isPiazzaPedinaPressed) {
-        e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
+        // e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
+        fetch("http://localhost:8080/smgweb/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({row, col})
+        })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Errore server: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Risposta server:", data);
+                })
+                .catch(error => {
+                    console.error("Errore nella fetch:", error);
+                });
         bloccaCampo();
         isPiazzaPedinaPressed = false;
     }
@@ -87,7 +99,6 @@ function onCellClick(e) {
 // Usa una carta
 function usaCarta(index) {
     console.log(`Carta ${index} usata`);
-
     // fetch a /api/usaCarta con index o id
 }
 

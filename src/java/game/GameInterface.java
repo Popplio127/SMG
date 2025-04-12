@@ -19,9 +19,11 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import media.MediaTypeNostra;
 
 @ServerEndpoint("/{username}")
@@ -94,8 +96,17 @@ public class GameInterface implements UI {
 
     @POST
     @Consumes(MediaTypeNostra.FINE)
-    public void fineTurno(Session session) {
+    public Response fineTurno(Session session) {
         game.fineTurno();
+        return Response.ok("Fine Turno Approvato").build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response piazzaPedina(Session session, @FormParam("row") int row, @FormParam("col") int col) {
+        game.piazzaPedina(row, col);
+        showBoard(game.getCampo(), game.getManoCarte());
+        return Response.ok("Pedina Piazzata").build();
     }
 
     @POST
