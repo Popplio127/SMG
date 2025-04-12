@@ -28,20 +28,17 @@ public class GameInterface implements UI {
 
     private static Game game;
     private Session session;
-    private static Set<GameInterface> gameEndpoints
-            = new CopyOnWriteArraySet<>();
+    private static Set<GameInterface> gameEndpoints = new CopyOnWriteArraySet<>();
     private static HashMap<String, String> users = new HashMap<>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException, EncodeException {
+        game = new Game();
+        game.setUi(this);
         this.session = session;
         gameEndpoints.add(this);
         users.put(session.getId(), username);
         System.out.println("Un nuovo utente si è connesso! " + session.getId());
-        
-        game=new Game();
-        game.setUi(this);
-        
         session.getBasicRemote().sendText("Benvenuto, " + session.getId() + "!");
     }
 
@@ -80,7 +77,7 @@ public class GameInterface implements UI {
     @GET
     @Override
     public void showBoard(String[][] board, List<Carta> manoCarte) {
-        MsgBoardCarte message = new MsgBoardCarte(users.get(session.getId()),"2",new BoardCarte(board,manoCarte));
+        MsgBoardCarte message = new MsgBoardCarte(users.get(session.getId()), "utente a cui deve arrivare il messaggio", new BoardCarte(board, manoCarte));
         gameEndpoints.forEach(endpoint -> {
             synchronized (endpoint) {
                 try {
@@ -96,10 +93,10 @@ public class GameInterface implements UI {
 
     @POST
     @Consumes("fine")
-    public void fineTurno(Session session){
+    public void fineTurno(Session session) {
         game.fineTurno();
-    } 
-    
+    }
+
     @POST
     @Override
     public void makeMove() {

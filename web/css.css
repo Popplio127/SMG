@@ -6,6 +6,7 @@ body {
 
 #gioco {
     display: flex;
+    flex-direction: row;
     height: 100vh;
     overflow: hidden;
 }
@@ -15,36 +16,41 @@ body {
     flex-direction: column;
     flex-grow: 1;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 10px;
+    overflow: hidden;
 }
 
 #campo {
-    transform: scale(1.8);
-    transform-origin: top center;
+    /*transform: scale(1.2);*/
     display: grid;
-    grid-template-rows: repeat(15, 40px);
-    grid-template-columns: repeat(8, 40px);
-    gap: 2px;
+    grid-template-rows: repeat(15, 48px); /* Più grande */
+    grid-template-columns: repeat(8, 48px);
+    gap: 5px;
     background-color: #ddd;
     padding: 10px;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-height: calc(100vh - 180px); /* evita sovrapposizione */
+    overflow: auto;
 }
 
 #campo button {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border: 1px solid #aaa;
     background-color: white;
     cursor: pointer;
     border-radius: 4px;
-    font-size:larger;
+    font-size: larger;
+    touch-action: manipulation;
 }
 
 #controlli {
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1px;
     margin-top: 20px;
 }
 
@@ -87,4 +93,49 @@ body {
     border: 2px solid #444;
     border-radius: 6px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Media Queries per schermi piccoli */
+@media (max-width: 768px) {
+    #gioco {
+        flex-direction: column;
+    }
+
+    #campo {
+        transform: scale(1);
+    }
+
+    #carte {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-left: none;
+        border-top: 2px solid #ccc;
+    }
+
+    #carte button {
+        margin: 5px;
+        width: 70px;
+        height: 90px;
+    }
+}
+
+@media (max-width: 480px) {
+    #campo {
+        grid-template-rows: repeat(15, 24px);
+        grid-template-columns: repeat(8, 24px);
+        padding: 5px;
+        transform: scale(1);
+    }
+
+    #campo button {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+    }
+
+    #controlli button {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
 }
