@@ -4,6 +4,7 @@ import dominio.BoardCarte;
 import dominio.Carta;
 import dominio.Message;
 import dominio.MsgBoardCarte;
+import dominio.MsgDadoTirato;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -88,7 +89,18 @@ public class GameInterface implements UI {
     @POST
     @Override
     public void setIsDadoTirato(boolean isDadoTirato) {
-        // Imposta stato "dado tirato"
+        MsgDadoTirato message = new MsgDadoTirato(users.get(session.getId()), "utente a cui deve arrivare il messaggio", isDadoTirato);
+        gameEndpoints.forEach(endpoint -> {
+            synchronized (endpoint) {
+                try {
+                    endpoint.session.getBasicRemote().sendObject(message);
+                } catch (IOException ex) {
+                    Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (EncodeException ex) {
+                    Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     @GET
