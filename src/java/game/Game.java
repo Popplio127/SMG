@@ -98,11 +98,13 @@ public class Game {
         numeroDado--;
     }
 
-    public void piazzaPedina(int riga, int colonna) {
+    public boolean piazzaPedina(int riga, int colonna) {
         if (numeroPedine > 0) {
             campo[riga][colonna] = "x";
             numeroPedine--;
+            return true;
         }
+        return false;
     }
 
     public void fineTurno() {

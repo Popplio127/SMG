@@ -2,6 +2,7 @@ package game;
 
 import dominio.BoardCarte;
 import dominio.Carta;
+import dominio.Message;
 import dominio.MsgBoardCarte;
 import java.io.IOException;
 import java.util.HashMap;
@@ -70,7 +71,18 @@ public class GameInterface implements UI {
     @GET
     @Override
     public void showMessage(String msg) {
-        // Mostra messaggio in un certo formato
+        Message message = new Message(users.get(session.getId()), "utente a cui deve arrivare il messaggio", msg);
+        gameEndpoints.forEach(endpoint -> {
+            synchronized (endpoint) {
+                try {
+                    endpoint.session.getBasicRemote().sendObject(message);
+                } catch (IOException ex) {
+                    Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (EncodeException ex) {
+                    Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     @POST
@@ -106,7 +118,9 @@ public class GameInterface implements UI {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response piazzaPedina(Session session, @FormParam("row") int row, @FormParam("col") int col) {
-        game.piazzaPedina(row, col);
+        if (!game.piazzaPedina(row, col)) {
+            showMessage("Impossibile piazzare un'altra pedina!\n Hai raggiunto il limite massimo di pedine piazzabili.");
+        }
         showBoard(game.getCampo(), game.getManoCarte());
         return Response.ok("Pedina Piazzata").build();
     }

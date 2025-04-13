@@ -76,7 +76,7 @@ function onCellClick(e) {
     const col = +e.target.dataset.col;
     console.log(`Hai cliccato sulla cella: ${row}, ${col}`);
     if (isPiazzaPedinaPressed) {
-        // e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
+        e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
         fetch("http://localhost:8080/smgweb/", {
             method: "POST",
             headers: {
