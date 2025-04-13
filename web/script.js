@@ -61,7 +61,12 @@ piazzaPedinaBtn.addEventListener("click", () => {
 fineTurnoBtn.addEventListener("click", () => {
     isDadoTirato = false;
     // fetch a /api/fineTurno o simile
-    fetch("http://localhost:8080/smgweb/", {method: "POST", headers: {"content-type": "fine"}});
+    fetch("http://localhost:8080/smgweb/", {
+        method: "POST",
+        headers: {
+            "content-type": "fine"
+        }
+    });
     alert("Turno finito.");
     fineTurnoBtn.disabled = true;
 });
@@ -78,19 +83,16 @@ function onCellClick(e) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({row, col})
-        })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Errore server: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Risposta server:", data);
-                })
-                .catch(error => {
-                    console.error("Errore nella fetch:", error);
-                });
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`Errore server: ${response.status}`);
+            }
+            return response.json();
+        }).then(data => {
+            console.log("Risposta server:", data);
+        }).catch(error => {
+            console.error("Errore nella fetch:", error);
+        });
         bloccaCampo();
         isPiazzaPedinaPressed = false;
     }

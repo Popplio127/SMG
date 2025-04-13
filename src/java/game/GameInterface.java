@@ -25,8 +25,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import media.MediaTypeNostra;
+import servizi.MessageDecoder;
+import servizi.MessageEncoder;
 
-@ServerEndpoint("/{username}")
+@ServerEndpoint(value = "/{username}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
 public class GameInterface implements UI {
 
     private static Game game;
