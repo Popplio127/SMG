@@ -76,7 +76,7 @@ function onCellClick(e) {
     const col = +e.target.dataset.col;
     console.log(`Hai cliccato sulla cella: ${row}, ${col}`);
     if (isPiazzaPedinaPressed) {
-        e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
+        //e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
         fetch("http://localhost:8080/smgweb/", {
             method: "POST",
             headers: {
@@ -87,12 +87,12 @@ function onCellClick(e) {
             if (!response.ok) {
                 throw new Error(`Errore server: ${response.status}`);
             }
-            return response.json();
+            //return response.json();
         }).then(data => {
             console.log("Risposta server:", data);
-        }).catch(error => {
-            console.error("Errore nella fetch:", error);
-        });
+        });//.catch(error => {
+        //console.error("Errore nella fetch:", error);
+        //});
         bloccaCampo();
         isPiazzaPedinaPressed = false;
     }

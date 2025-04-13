@@ -132,6 +132,7 @@ public class GameInterface implements UI {
     public Response piazzaPedina(Session session, @FormParam("row") int row, @FormParam("col") int col) {
         if (!game.piazzaPedina(row, col)) {
             showMessage("Impossibile piazzare un'altra pedina!\n Hai raggiunto il limite massimo di pedine piazzabili.");
+            return Response.ok("Impossibile piazzare pedina").build();
         }
         showBoard(game.getCampo(), game.getManoCarte());
         return Response.ok("Pedina Piazzata").build();
