@@ -5,6 +5,7 @@ import dominio.Carta;
 import dominio.Message;
 import dominio.MsgBoardCarte;
 import dominio.MsgDadoTirato;
+import dominio.Pedina;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -21,9 +22,9 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import media.MediaTypeNostra;
@@ -106,6 +107,7 @@ public class GameInterface implements UI {
     @GET
     @Override
     public void showBoard(String[][] board, List<Carta> manoCarte) {
+        System.out.println("SO DENTRO BOARD");
         MsgBoardCarte message = new MsgBoardCarte(users.get(session.getId()), "utente a cui deve arrivare il messaggio", new BoardCarte(board, manoCarte));
         gameEndpoints.forEach(endpoint -> {
             synchronized (endpoint) {
@@ -120,22 +122,29 @@ public class GameInterface implements UI {
         });
     }
 
+    @Path("/fineTurno")
     @POST
-    @Consumes(MediaTypeNostra.FINE)
-    public Response fineTurno(Session session) {
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response fineTurno(String nome) {
         game.fineTurno();
         return Response.ok("Fine Turno Approvato").build();
     }
 
     @POST
+    @Path("/piazzaPedina")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response piazzaPedina(Session session, @FormParam("row") int row, @FormParam("col") int col) {
-        if (!game.piazzaPedina(row, col)) {
+    public Response piazzaPedina(Pedina pedina) {
+        System.out.println("SO DENTRO");
+        if (!game.piazzaPedina(pedina.getX(), pedina.getY())) {
+            System.out.println("SO DENTRO L'IF");
+
             showMessage("Impossibile piazzare un'altra pedina!\n Hai raggiunto il limite massimo di pedine piazzabili.");
             return Response.ok("Impossibile piazzare pedina").build();
         }
+        System.out.println("SO FUORI");
         showBoard(game.getCampo(), game.getManoCarte());
-        return Response.ok("Pedina Piazzata").build();
+        System.out.println("SO FUORI DOPO BOARD");
+        return Response.status(Response.Status.BAD_REQUEST).entity("Impossibile piazzare pedina").build();
     }
 
     @POST

@@ -8,6 +8,7 @@ const fineTurnoBtn = document.getElementById("fineTurno");
 let campo = [];
 let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
+
 const nome = prompt("Inserire il nome");
 const socket = new WebSocket('ws://localhost:8080/smgweb/' + nome);
 socket.addEventListener('open', () => {
@@ -16,7 +17,12 @@ socket.addEventListener('open', () => {
     alert(nome + " ti sei connesso!");
 });
 socket.addEventListener('message', event => {
-    alert(event.data);
+    try {
+        const msg = JSON.parse(event.data);
+        alert("Messaggio: " + msg.testo);
+    } catch (e) {
+        alert(event.data);
+    }
 });
 // Inizializza griglia
 for (let i = 0; i < RIGA; i++) {
@@ -53,7 +59,6 @@ piazzaPedinaBtn.addEventListener("click", () => {
     isPiazzaPedinaPressed = true;
     // Attiva solo le celle della prima riga
     for (let i = 0; i < COLONNA; i++) {
-        campo[RIGA - 1][i].disabled = true;
         campo[RIGA - 1][i].disabled = false;
     }
     tiraDadoBtn.disabled = false;
@@ -61,7 +66,7 @@ piazzaPedinaBtn.addEventListener("click", () => {
 fineTurnoBtn.addEventListener("click", () => {
     isDadoTirato = false;
     // fetch a /api/fineTurno o simile
-    fetch("http://localhost:8080/smgweb/", {
+    fetch("http://localhost:8080/smgweb/fineTurno", {
         method: "POST",
         headers: {
             "content-type": "fine"
@@ -77,22 +82,24 @@ function onCellClick(e) {
     console.log(`Hai cliccato sulla cella: ${row}, ${col}`);
     if (isPiazzaPedinaPressed) {
         //e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
-        fetch("http://localhost:8080/smgweb/", {
+        fetch("http://localhost:8080/smgweb/piazzaPedina", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({row, col})
+            body: JSON.stringify({x: row, y: col})
         }).then(response => {
             if (!response.ok) {
-                throw new Error(`Errore server: ${response.status}`);
+                return response.text().then(msg => {
+                    throw new Error(msg);
+                });
             }
-            //return response.json();
+            return response.json();
         }).then(data => {
             console.log("Risposta server:", data);
-        });//.catch(error => {
-        //console.error("Errore nella fetch:", error);
-        //});
+        }).catch(error => {
+            console.error("Errore nella fetch:", error);
+        });
         bloccaCampo();
         isPiazzaPedinaPressed = false;
     }
