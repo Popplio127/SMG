@@ -21,18 +21,21 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import media.MediaTypeNostra;
 import servizi.MessageDecoder;
 import servizi.MessageEncoder;
 
+@ApplicationPath("")
+@Path("/smgweb")
 @ServerEndpoint(value = "/{username}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
-public class GameInterface implements UI {
+public class GameInterface extends Application implements UI {
 
     private static Game game;
     private Session session;
@@ -41,11 +44,11 @@ public class GameInterface implements UI {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException, EncodeException {
-        game = new Game();
-        game.setUi(this);
         this.session = session;
         gameEndpoints.add(this);
         users.put(session.getId(), username);
+        this.game = new Game();
+        game.setUi(this);
         System.out.println("Un nuovo utente si è connesso! " + session.getId());
         session.getBasicRemote().sendText("Benvenuto, " + session.getId() + "!");
     }
@@ -137,9 +140,8 @@ public class GameInterface implements UI {
         System.out.println("SO DENTRO");
         if (!game.piazzaPedina(pedina.getX(), pedina.getY())) {
             System.out.println("SO DENTRO L'IF");
-
             showMessage("Impossibile piazzare un'altra pedina!\n Hai raggiunto il limite massimo di pedine piazzabili.");
-            return Response.ok("Impossibile piazzare pedina").build();
+            return Response.status(400).entity("Impossibile piazzare pedina").build();
         }
         System.out.println("SO FUORI");
         showBoard(game.getCampo(), game.getManoCarte());
