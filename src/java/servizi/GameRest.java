@@ -6,14 +6,14 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import singleton.Singleton;
 
-@ApplicationPath("smgweb")
+//@ApplicationPath("/smgweb")
 @Path("/")
 public class GameRest extends Application {
 
     private static Game game;
 
-    @Path("fineturno")
     @POST
+    @Path("fineturno")
     @Consumes(MediaType.TEXT_PLAIN)
     public Response fineTurno(String nome) {
         System.out.println("appena entrato in fine turno");

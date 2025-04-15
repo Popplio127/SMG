@@ -66,11 +66,13 @@ piazzaPedinaBtn.addEventListener("click", () => {
 fineTurnoBtn.addEventListener("click", () => {
     isDadoTirato = false;
     // fetch a /api/fineTurno o simile
+    const nome = "Pierpaolo";
     fetch("http://localhost:8080/smgweb/fineturno", {
         method: "POST",
         headers: {
             "content-type": "text/plain"
-        }
+        },
+        body: nome
     });
     alert("Turno finito.");
     fineTurnoBtn.disabled = true;
