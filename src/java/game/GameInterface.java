@@ -32,8 +32,8 @@ import javax.ws.rs.core.Response;
 import servizi.MessageDecoder;
 import servizi.MessageEncoder;
 
-@ApplicationPath("")
-@Path("/smgweb")
+//@ApplicationPath("")
+//@Path("/smgweb")
 @ServerEndpoint(value = "/{username}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
 public class GameInterface extends Application implements UI {
 
@@ -125,29 +125,6 @@ public class GameInterface extends Application implements UI {
         });
     }
 
-    @Path("/fineTurno")
-    @POST
-    @Consumes(MediaType.TEXT_PLAIN)
-    public Response fineTurno(String nome) {
-        game.fineTurno();
-        return Response.ok("Fine Turno Approvato").build();
-    }
-
-    @POST
-    @Path("/piazzaPedina")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response piazzaPedina(Pedina pedina) {
-        System.out.println("SO DENTRO");
-        if (!game.piazzaPedina(pedina.getX(), pedina.getY())) {
-            System.out.println("SO DENTRO L'IF");
-            showMessage("Impossibile piazzare un'altra pedina!\n Hai raggiunto il limite massimo di pedine piazzabili.");
-            return Response.status(400).entity("Impossibile piazzare pedina").build();
-        }
-        System.out.println("SO FUORI");
-        showBoard(game.getCampo(), game.getManoCarte());
-        System.out.println("SO FUORI DOPO BOARD");
-        return Response.status(Response.Status.BAD_REQUEST).entity("Impossibile piazzare pedina").build();
-    }
 
     @POST
     @Override

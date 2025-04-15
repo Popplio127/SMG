@@ -69,7 +69,7 @@ fineTurnoBtn.addEventListener("click", () => {
     fetch("http://localhost:8080/smgweb/fineTurno", {
         method: "POST",
         headers: {
-            "content-type": "fine"
+            "content-type": "text/plain"
         }
     });
     alert("Turno finito.");
