@@ -6,13 +6,13 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import singleton.Singleton;
 
-@ApplicationPath("/smgweb")
-//@Path("/smgweb")
+@ApplicationPath("smgweb")
+@Path("/")
 public class GameRest extends Application {
 
     private static Game game;
 
-    @Path("/fineTurno")
+    @Path("fineturno")
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
     public Response fineTurno(String nome) {
@@ -22,7 +22,7 @@ public class GameRest extends Application {
     }
 
     @POST
-    @Path("/piazzaPedina")
+    @Path("piazzapedina")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response piazzaPedina(Pedina pedina) {
         System.out.println("SO DENTRO");

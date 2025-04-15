@@ -66,7 +66,7 @@ piazzaPedinaBtn.addEventListener("click", () => {
 fineTurnoBtn.addEventListener("click", () => {
     isDadoTirato = false;
     // fetch a /api/fineTurno o simile
-    fetch("http://localhost:8080/smgweb/fineTurno", {
+    fetch("http://localhost:8080/smgweb/fineturno", {
         method: "POST",
         headers: {
             "content-type": "text/plain"
@@ -82,7 +82,7 @@ function onCellClick(e) {
     console.log(`Hai cliccato sulla cella: ${row}, ${col}`);
     if (isPiazzaPedinaPressed) {
         //e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
-        fetch("http://localhost:8080/smgweb/piazzaPedina", {
+        fetch("http://localhost:8080/smgweb/piazzapedina", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
