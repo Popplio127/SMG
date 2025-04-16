@@ -5,8 +5,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import singleton.Singleton;
 
-@ApplicationPath("/")
-@Path("/")
+@ApplicationPath("/smgweb")
+@Path("/smgweb")
 public class GameRest extends Application {
 
     //private static Game game;
