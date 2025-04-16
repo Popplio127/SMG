@@ -1,8 +1,9 @@
 package dominio;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class BoardCarte {
+public class BoardCarte implements Serializable, Cloneable {
 
     private String[][] board;
     private List<Carta> carte;

@@ -2,7 +2,7 @@ package dominio;
 
 import java.io.Serializable;
 
-public class Pedina implements Serializable, Cloneable{
+public class Pedina implements Serializable, Cloneable {
 
     private int x;
     private int y;

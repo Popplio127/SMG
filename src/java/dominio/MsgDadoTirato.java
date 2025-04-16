@@ -1,6 +1,8 @@
 package dominio;
 
-public class MsgDadoTirato {
+import java.io.Serializable;
+
+public class MsgDadoTirato implements Serializable, Cloneable {
 
     private String from;
     private String to;

@@ -1,12 +1,11 @@
 package servizi;
 
 import dominio.Pedina;
-import game.Game;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import singleton.Singleton;
 
-@ApplicationPath("/smgweb")
+@ApplicationPath("/")
 @Path("/")
 public class GameRest extends Application {
 
@@ -33,6 +32,6 @@ public class GameRest extends Application {
         System.out.println("SO FUORI");
         Singleton.getIstanza().getUI().showBoard(Singleton.getIstanza().getCampo(), Singleton.getIstanza().getManoCarte());
         System.out.println("SO FUORI DOPO BOARD");
-        return Response.status(Response.Status.BAD_REQUEST).entity("Impossibile piazzare pedina").build();
+        return Response.ok("Pedina piazzata con successo!").build();
     }
 }

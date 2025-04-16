@@ -1,6 +1,8 @@
 package dominio;
 
-public class MsgBoardCarte {
+import java.io.Serializable;
+
+public class MsgBoardCarte implements Serializable, Cloneable {
 
     private String from;
     private String to;

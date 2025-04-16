@@ -11,11 +11,13 @@ let isPiazzaPedinaPressed = false;
 
 const nome = prompt("Inserire il nome");
 const socket = new WebSocket('ws://localhost:8080/smgweb/' + nome);
+
 socket.addEventListener('open', () => {
     console.log(nome + " si è connesso!");
     socket.send(nome);
     alert(nome + " ti sei connesso!");
 });
+
 socket.addEventListener('message', event => {
     try {
         const msg = JSON.parse(event.data);
@@ -24,6 +26,7 @@ socket.addEventListener('message', event => {
         alert(event.data);
     }
 });
+
 // Inizializza griglia
 for (let i = 0; i < RIGA; i++) {
     campo[i] = [];
@@ -55,6 +58,7 @@ tiraDadoBtn.addEventListener("click", () => {
     alert("Hai tirato il dado!");
     fineTurnoBtn.disabled = false;
 });
+
 piazzaPedinaBtn.addEventListener("click", () => {
     isPiazzaPedinaPressed = true;
     // Attiva solo le celle della prima riga

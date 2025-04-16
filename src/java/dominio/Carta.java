@@ -2,7 +2,7 @@ package dominio;
 
 import java.io.Serializable;
 
-public class Carta implements Serializable, Cloneable{
+public class Carta implements Serializable, Cloneable {
 
     private String quelloCheLaCartaSaFare;
     private String rarita;
@@ -35,5 +35,5 @@ public class Carta implements Serializable, Cloneable{
     public String toString() {
         return "Carta{" + "quelloCheLaCartaSaFare=" + quelloCheLaCartaSaFare + ", rarita=" + rarita + '}';
     }
-    
+
 }

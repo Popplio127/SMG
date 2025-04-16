@@ -1,6 +1,8 @@
 package dominio;
 
-public class Message {
+import java.io.Serializable;
+
+public class Message implements Serializable, Cloneable {
 
     private String from;
     private String to;
