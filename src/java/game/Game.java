@@ -75,10 +75,6 @@ public class Game {
         Collections.shuffle(mazzoMischiato);
     }
 
-    public void setUi(UI gameInterface) {
-        this.gameInterface = gameInterface;
-    }
-
     public void spostaPedina(Pedina pedinaPrecedente, Pedina pedinaAttuale) {
         campo[pedinaPrecedente.getY()][pedinaPrecedente.getX()] = "";
         campo[pedinaAttuale.getY()][pedinaAttuale.getX()] = "x";
@@ -299,4 +295,11 @@ public class Game {
         return numeroPedine;
     }
 
+    public void setUi(UI gameInterface) {
+        this.gameInterface = gameInterface;
+    }
+
+    public UI getUI() {
+        return gameInterface;
+    }
 }

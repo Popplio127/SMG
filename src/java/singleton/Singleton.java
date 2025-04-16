@@ -7,7 +7,6 @@ public class Singleton {
     private static Game istanza = null;
 
     private Singleton() {
-
     }
 
     public static synchronized Game getIstanza() {
