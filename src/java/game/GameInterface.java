@@ -34,7 +34,7 @@ import servizi.MessageEncoder;
 
 //@ApplicationPath("")
 //@Path("/smgweb")
-@ServerEndpoint(value = "/{username}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
+@ServerEndpoint(value = "/{username}")
 public class GameInterface extends Application implements UI {
 
     private static Game game;
