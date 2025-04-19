@@ -5,7 +5,6 @@ import dominio.Carta;
 import dominio.Message;
 import dominio.MsgBoardCarte;
 import dominio.MsgDadoTirato;
-import dominio.Pedina;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -21,21 +20,13 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import servizi.MessageDecoder;
-import servizi.MessageEncoder;
 
 //@ApplicationPath("")
 //@Path("/smgweb")
 @ServerEndpoint(value = "/{username}")
-public class GameInterface extends Application implements UI {
+public class GameInterface implements UI {
 
     private static Game game;
     private Session session;
@@ -124,7 +115,6 @@ public class GameInterface extends Application implements UI {
             }
         });
     }
-
 
     @POST
     @Override

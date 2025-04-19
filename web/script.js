@@ -53,7 +53,20 @@ for (let i = 0; i < RIGA; i++) {
 
 // Eventi pulsanti
 tiraDadoBtn.addEventListener("click", () => {
-// fetch a /api/tiraDado o simile
+    fetch("http://localhost:8080/smgweb/api/tiradado", {
+        method: "POST",
+        headers: {
+            "content-type": "text/plain"
+        }
+    }).then(response => {
+        if (!response.ok) {
+            alert("Risposta nulla");
+            return null;
+        }
+        return response.json();
+    }).then(rispostaFinale => {
+        alert("Hai fatto il numero: " + rispostaFinale);
+    });
     isDadoTirato = true;
     alert("Hai tirato il dado!");
     fineTurnoBtn.disabled = false;
@@ -61,17 +74,16 @@ tiraDadoBtn.addEventListener("click", () => {
 
 piazzaPedinaBtn.addEventListener("click", () => {
     isPiazzaPedinaPressed = true;
-    // Attiva solo le celle della prima riga
     for (let i = 0; i < COLONNA; i++) {
         campo[RIGA - 1][i].disabled = false;
     }
     tiraDadoBtn.disabled = false;
 });
+
 fineTurnoBtn.addEventListener("click", () => {
     isDadoTirato = false;
-    // fetch a /api/fineTurno o simile
     const nome = "Pierpaolo";
-    fetch("http://localhost:8080/smgweb/fineturno", {
+    fetch("http://localhost:8080/smgweb/api/fineturno", {
         method: "POST",
         headers: {
             "content-type": "text/plain"
@@ -88,7 +100,7 @@ function onCellClick(e) {
     console.log(`Hai cliccato sulla cella: ${row}, ${col}`);
     if (isPiazzaPedinaPressed) {
         //e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
-        fetch("http://localhost:8080/smgweb/piazzapedina", {
+        fetch("http://localhost:8080/smgweb/api/piazzapedina", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

@@ -5,8 +5,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import singleton.Singleton;
 
-@ApplicationPath("/smgweb")
-@Path("/smgweb")
+@ApplicationPath("api")
+@Path("/")
 public class GameRest extends Application {
 
     //private static Game game;
@@ -33,5 +33,14 @@ public class GameRest extends Application {
         Singleton.getIstanza().getUI().showBoard(Singleton.getIstanza().getCampo(), Singleton.getIstanza().getManoCarte());
         System.out.println("SO FUORI DOPO BOARD");
         return Response.ok("Pedina piazzata con successo!").build();
+    }
+
+    @POST
+    @Path("tiradado")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response tiraDado() {
+        System.out.println("Sono in tira DADO");
+        Singleton.getIstanza().tiraDado();
+        return Response.ok("Dado tirato con successo!").build();
     }
 }
