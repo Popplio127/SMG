@@ -1,10 +1,11 @@
-package game;
+package user_interface;
 
 import dominio.BoardCarte;
 import dominio.Carta;
 import dominio.Message;
 import dominio.MsgBoardCarte;
 import dominio.MsgDadoTirato;
+import game.Game;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;

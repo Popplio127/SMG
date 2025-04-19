@@ -1,5 +1,6 @@
 package game;
 
+import user_interface.UI;
 import dominio.Carta;
 import dominio.Pedina;
 import java.util.ArrayList;
