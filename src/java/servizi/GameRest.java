@@ -1,6 +1,7 @@
 package servizi;
 
 import dominio.Pedina;
+import game.Game;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import singleton.Singleton;
@@ -8,8 +9,7 @@ import singleton.Singleton;
 @ApplicationPath("api")
 @Path("/")
 public class GameRest extends Application {
-
-    //private static Game game;
+    
     @POST
     @Path("fineturno")
     @Consumes(MediaType.TEXT_PLAIN)

@@ -20,21 +20,21 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
+import singleton.Singleton;
 
 //@ApplicationPath("")
 //@Path("/smgweb")
 @ServerEndpoint(value = "/{username}")
 public class GameInterface implements UI {
 
-    private static Game game;
+    private static Game game = Singleton.getIstanza();
     private Session session;
     private static Set<GameInterface> gameEndpoints = new CopyOnWriteArraySet<>();
     private static HashMap<String, String> users = new HashMap<>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException, EncodeException {
+        game.setUi(this);
         this.session = session;
         gameEndpoints.add(this);
         users.put(session.getId(), username);
@@ -64,7 +64,6 @@ public class GameInterface implements UI {
         throwable.printStackTrace();
     }
 
-    @GET
     @Override
     public void showMessage(String msg) {
         Message message = new Message(users.get(session.getId()), "utente a cui deve arrivare il messaggio", msg);
@@ -81,7 +80,6 @@ public class GameInterface implements UI {
         });
     }
 
-    @POST
     @Override
     public void setIsDadoTirato(boolean isDadoTirato) {
         MsgDadoTirato message = new MsgDadoTirato(users.get(session.getId()), "utente a cui deve arrivare il messaggio", isDadoTirato);
@@ -98,7 +96,6 @@ public class GameInterface implements UI {
         });
     }
 
-    @GET
     @Override
     public void showBoard(String[][] board, List<Carta> manoCarte) {
         System.out.println("SO DENTRO BOARD");
@@ -116,7 +113,6 @@ public class GameInterface implements UI {
         });
     }
 
-    @POST
     @Override
     public void makeMove() {
         // Gestisce il movimento
