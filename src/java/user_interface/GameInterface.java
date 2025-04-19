@@ -58,8 +58,10 @@ public class GameInterface implements UI {
     }
 
     @OnClose
-    public void onClose(Session session) throws IOException, EncodeException {
+    public void onClose(Session session) {
         System.out.println("Client disconnesso: " + session.getId());
+        gameEndpoints.removeIf(endpoint -> endpoint.session.getId().equals(session.getId()));
+        users.remove(session.getId());
     }
 
     @OnError
@@ -70,32 +72,40 @@ public class GameInterface implements UI {
     @Override
     public void showMessage(String msg) {
         Message message = new Message(users.get(session.getId()), "utente a cui deve arrivare il messaggio", msg);
-        gameEndpoints.forEach(endpoint -> {
+        gameEndpoints.removeIf(endpoint -> {
+            Session s = endpoint.session;
+            if (s == null || !s.isOpen()) {
+                return true;
+            }
             synchronized (endpoint) {
                 try {
-                    endpoint.session.getBasicRemote().sendObject(message);
-                } catch (IOException ex) {
+                    s.getBasicRemote().sendObject(message);
+                } catch (IOException | EncodeException ex) {
                     Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (EncodeException ex) {
-                    Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    return true; // rimuovi se invio fallisce
                 }
             }
+            return false;
         });
     }
 
     @Override
     public void setIsDadoTirato(boolean isDadoTirato) {
         MsgDadoTirato message = new MsgDadoTirato(users.get(session.getId()), "utente a cui deve arrivare il messaggio", isDadoTirato);
-        gameEndpoints.forEach(endpoint -> {
+        gameEndpoints.removeIf(endpoint -> {
+            Session s = endpoint.session;
+            if (s == null || !s.isOpen()) {
+                return true;
+            }
             synchronized (endpoint) {
                 try {
-                    endpoint.session.getBasicRemote().sendObject(message);
-                } catch (IOException ex) {
+                    s.getBasicRemote().sendObject(message);
+                } catch (IOException | EncodeException ex) {
                     Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (EncodeException ex) {
-                    Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    return true;
                 }
             }
+            return false;
         });
     }
 
@@ -103,16 +113,20 @@ public class GameInterface implements UI {
     public void showBoard(String[][] board, List<Carta> manoCarte) {
         System.out.println("SO DENTRO BOARD");
         MsgBoardCarte message = new MsgBoardCarte(users.get(session.getId()), "utente a cui deve arrivare il messaggio", new BoardCarte(board, manoCarte));
-        gameEndpoints.forEach(endpoint -> {
+        gameEndpoints.removeIf(endpoint -> {
+            Session s = endpoint.session;
+            if (s == null || !s.isOpen()) {
+                return true;
+            }
             synchronized (endpoint) {
                 try {
-                    endpoint.session.getBasicRemote().sendObject(message);
-                } catch (IOException ex) {
+                    s.getBasicRemote().sendObject(message);
+                } catch (IOException | EncodeException ex) {
                     Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (EncodeException ex) {
-                    Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    return true;
                 }
             }
+            return false;
         });
     }
 
