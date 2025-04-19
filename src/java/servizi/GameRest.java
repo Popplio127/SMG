@@ -1,5 +1,8 @@
 package servizi;
 
+import dominio.BoardCarte;
+import dominio.Message;
+import dominio.MsgBoardCarte;
 import dominio.Pedina;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -24,11 +27,11 @@ public class GameRest extends Application {
     public Response piazzaPedina(Pedina pedina) {
         System.out.println(pedina);
         if (!Singleton.getIstanza().piazzaPedina(pedina)) {
-            Singleton.getIstanza().getUI().showMessage("Impossibile piazzare un'altra pedina!\n Hai raggiunto il limite massimo di pedine piazzabili.");
-            return Response.status(400).entity("Impossibile piazzare pedina").build();
+            Message json = Singleton.getIstanza().getUI().showMessage("Impossibile piazzare un'altra pedina!\n Hai raggiunto il limite massimo di pedine piazzabili.");
+            return Response.status(400).entity(json).build();
         }
-        Singleton.getIstanza().getUI().showBoard(Singleton.getIstanza().getCampo(), Singleton.getIstanza().getManoCarte());
-        return Response.ok("Pedina piazzata con successo!").build();
+        MsgBoardCarte json = Singleton.getIstanza().getUI().showBoard(Singleton.getIstanza().getCampo(), Singleton.getIstanza().getManoCarte());
+        return Response.ok(json).build();
     }
 
     @POST

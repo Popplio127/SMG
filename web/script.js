@@ -108,17 +108,11 @@ function onCellClick(e) {
             },
             body: JSON.stringify(pedina)
         }).then(response => {
-            if (!response.ok) {
-                throw new Error("Errore nella risposta del server");
-            }
             return response.json();
         }).then(data => {
-            console.log("Matrice aggiornata: " + data);
-        }).catch(error => {
-            console.error("Errore nel fetch:", error);
+            aggiornaCampo(data.content.board, data.content.manoCarte);
         });
     }
-
     bloccaCampo();
     isPiazzaPedinaPressed = false;
 }
@@ -137,3 +131,61 @@ function bloccaCampo() {
         }
     }
 }
+
+function aggiornaCampo(board, manoCarte) {
+    // Aggiorna il campo con la matrice board
+    for (let i = 0; i < RIGA; i++) {
+        for (let j = 0; j < COLONNA; j++) {
+            const cell = campo[i][j];
+            const valore = board[i][j];
+            if (valore === "x") {
+                cell.innerHTML = `<img src="/immagini/pedina.png" alt="pedina" width="24" height="24">`;
+            } else {
+                cell.innerHTML = '';
+            }
+        }
+    }
+    carteContainer.innerHTML = "";
+
+    if (!Array.isArray(manoCarte))
+        return;
+
+    // Crea i pulsanti delle carte
+    manoCarte.forEach((carta, i) => {
+        const slot = document.createElement("button");
+        let colore = '';
+        let abilitato = true;
+
+        switch (carta.rarita) {
+            case "RARO":
+                colore = 'green';
+                break;
+            case "SUPER RARO":
+                colore = 'cyan';
+                break;
+            case "EPICO":
+                colore = 'magenta';
+                break;
+            case "MITICO":
+                colore = 'red';
+                break;
+            case "LEGGENDARIO":
+                colore = 'yellow';
+                break;
+            case "WIDAUTLEVEL":
+                abilitato = false;
+                break;
+            default:
+                colore = 'white';
+        }
+
+        slot.innerText = carta.quelloCheLaCartaSaFare;
+        slot.disabled = !abilitato || (slot.innerText.includes("(Disabilitata se hai già lanciato il dado)") && isDadoTirato);
+        slot.style.backgroundColor = colore;
+        slot.style.color = 'black';
+        slot.addEventListener("click", () => usaCarta(i));
+        slot.id = `slot-${i}`;
+        carteContainer.appendChild(slot);
+    });
+}
+

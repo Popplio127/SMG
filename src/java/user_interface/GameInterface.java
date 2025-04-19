@@ -70,7 +70,7 @@ public class GameInterface implements UI {
     }
 
     @Override
-    public void showMessage(String msg) {
+    public Message showMessage(String msg) {
         Message message = new Message(users.get(session.getId()), "utente a cui deve arrivare il messaggio", msg);
         gameEndpoints.removeIf(endpoint -> {
             Session s = endpoint.session;
@@ -87,6 +87,7 @@ public class GameInterface implements UI {
             }
             return false;
         });
+        return message;
     }
 
     @Override
@@ -110,7 +111,7 @@ public class GameInterface implements UI {
     }
 
     @Override
-    public void showBoard(String[][] board, List<Carta> manoCarte) {
+    public MsgBoardCarte showBoard(String[][] board, List<Carta> manoCarte) {
         System.out.println("SO DENTRO BOARD");
         MsgBoardCarte message = new MsgBoardCarte(users.get(session.getId()), "utente a cui deve arrivare il messaggio", new BoardCarte(board, manoCarte));
         gameEndpoints.removeIf(endpoint -> {
@@ -128,6 +129,7 @@ public class GameInterface implements UI {
             }
             return false;
         });
+        return message;
     }
 
     @Override
