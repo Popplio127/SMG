@@ -9,10 +9,10 @@ let campo = [];
 let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
 
-const nome = prompt("Inserire il nome");
-const socket = new WebSocket('ws://localhost:8080/smgweb/' + nome);
+const socket = new WebSocket('ws://localhost:8080/smgweb/');
 
 socket.addEventListener('open', () => {
+    const nome = prompt("Inserire il nome");
     console.log(nome + " si è connesso!");
     socket.send(nome);
     alert(nome + " ti sei connesso!");
@@ -21,9 +21,14 @@ socket.addEventListener('open', () => {
 socket.addEventListener('message', event => {
     try {
         const msg = JSON.parse(event.data);
-        alert("Messaggio: " + msg.testo);
+        console.log("Messaggio socket ricevuto:", msg);
+
+        if (msg.tipo === "aggiornaBoard") {
+            const {board, carte} = msg.contenuto;
+            aggiornaCampo(board, carte);
+        }
     } catch (e) {
-        alert(event.data);
+        alert(event.data); // fallback per stringhe semplici
     }
 });
 
@@ -103,6 +108,7 @@ function onCellClick(e) {
             const contenuto = data.content;
             const board = contenuto.board;
             const carte = contenuto.carte;
+            console.log(board);
             aggiornaCampo(board, carte);
         });
     }
@@ -130,10 +136,9 @@ function aggiornaCampo(board, manoCarte) {
     for (let i = 0; i < RIGA; i++) {
         for (let j = 0; j < COLONNA; j++) {
             const cell = campo[i][j];
-            const valore = board[i][j];
-
+            const valore = board[i].item[j];
             if (valore === "x") {
-                cell.innerHTML = `<img src="/immagini/pedina.png" alt="pedina" width="24" height="24">`;
+                cell.textContent = "🟢";
             } else {
                 cell.innerHTML = '';
             }
@@ -183,7 +188,8 @@ function aggiornaCampo(board, manoCarte) {
     // Invia la nuova board via WebSocket
     if (socket.readyState === WebSocket.OPEN) {
         socket.send(JSON.stringify({
-            tipo: "aggiornaBoard", contenuto: {
+            tipo: "aggiornaBoard",
+            contenuto: {
                 board: board,
                 carte: manoCarte
             }
