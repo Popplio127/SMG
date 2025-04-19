@@ -41,16 +41,6 @@ for (let i = 0; i < RIGA; i++) {
     }
 }
 
-// Slot carte (inizialmente vuoti)
-//for (let i = 0; i < 5; i++) {
-//    const carta = document.createElement("button");
-//    carta.textContent = `C${i + 1}`;
-//    carta.title = `Carta ${i + 1}`;
-//    carta.disabled = true;
-//    carta.addEventListener("click", () => usaCarta(i));
-//    carteContainer.appendChild(carta);
-//}
-
 // Eventi pulsanti
 tiraDadoBtn.addEventListener("click", () => {
     fetch("http://localhost:8080/smgweb/api/tiradado", {
@@ -110,7 +100,10 @@ function onCellClick(e) {
         }).then(response => {
             return response.json();
         }).then(data => {
-            aggiornaCampo(data.content.board, data.content.manoCarte);
+            const contenuto = data.content;
+            const board = contenuto.board;
+            const carte = contenuto.carte;
+            aggiornaCampo(board, carte);
         });
     }
     bloccaCampo();
@@ -138,24 +131,24 @@ function aggiornaCampo(board, manoCarte) {
         for (let j = 0; j < COLONNA; j++) {
             const cell = campo[i][j];
             const valore = board[i][j];
+
             if (valore === "x") {
                 cell.innerHTML = `<img src="/immagini/pedina.png" alt="pedina" width="24" height="24">`;
             } else {
                 cell.innerHTML = '';
             }
+            cell.disabled = valore !== "";
         }
     }
     carteContainer.innerHTML = "";
-
-    if (!Array.isArray(manoCarte))
+    if (!Array.isArray(manoCarte)) {
         return;
-
-    // Crea i pulsanti delle carte
+    }
     manoCarte.forEach((carta, i) => {
         const slot = document.createElement("button");
-        let colore = '';
+        slot.innerText = carta.quelloCheLaCartaSaFare;
+        let colore = 'white';
         let abilitato = true;
-
         switch (carta.rarita) {
             case "RARO":
                 colore = 'green';
@@ -175,17 +168,26 @@ function aggiornaCampo(board, manoCarte) {
             case "WIDAUTLEVEL":
                 abilitato = false;
                 break;
-            default:
-                colore = 'white';
         }
-
-        slot.innerText = carta.quelloCheLaCartaSaFare;
-        slot.disabled = !abilitato || (slot.innerText.includes("(Disabilitata se hai già lanciato il dado)") && isDadoTirato);
+        const contieneAvvisoDado = slot.innerText.includes("(Disabilitata se hai già lanciato il dado)");
+        if (contieneAvvisoDado && isDadoTirato) {
+            abilitato = false;
+        }
+        slot.disabled = !abilitato;
         slot.style.backgroundColor = colore;
         slot.style.color = 'black';
-        slot.addEventListener("click", () => usaCarta(i));
         slot.id = `slot-${i}`;
+        slot.addEventListener("click", () => usaCarta(i));
         carteContainer.appendChild(slot);
     });
+    // Invia la nuova board via WebSocket
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({
+            tipo: "aggiornaBoard", contenuto: {
+                board: board,
+                carte: manoCarte
+            }
+        }));
+    }
 }
 
