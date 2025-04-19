@@ -100,27 +100,27 @@ function onCellClick(e) {
     console.log(`Hai cliccato sulla cella: ${row}, ${col}`);
     if (isPiazzaPedinaPressed) {
         //e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
-        fetch("http://localhost:8080/smgweb/api/piazzapedina", {
-            method: "POST",
+        const pedina = {x: row, y: col};
+        fetch('http://localhost:8080/smgweb/api/piazzapedina', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({x: row, y: col})
+            body: JSON.stringify(pedina)
         }).then(response => {
             if (!response.ok) {
-                return response.text().then(msg => {
-                    throw new Error(msg);
-                });
+                throw new Error("Errore nella risposta del server");
             }
             return response.json();
         }).then(data => {
-            console.log("Risposta server:", data);
+            console.log("Matrice aggiornata: " + data);
         }).catch(error => {
-            console.error("Errore nella fetch:", error);
+            console.error("Errore nel fetch:", error);
         });
-        bloccaCampo();
-        isPiazzaPedinaPressed = false;
     }
+
+    bloccaCampo();
+    isPiazzaPedinaPressed = false;
 }
 
 // Usa una carta

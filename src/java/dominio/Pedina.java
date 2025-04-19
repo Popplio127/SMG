@@ -11,7 +11,7 @@ public class Pedina implements Serializable, Cloneable {
 
     }
 
-    public Pedina(int y, int x) {
+    public Pedina(int x, int y) {
         this.x = x;
         this.y = y;
     }

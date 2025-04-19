@@ -20,11 +20,13 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import servizi.MessageDecoder;
+import servizi.MessageEncoder;
 import singleton.Singleton;
 
 //@ApplicationPath("")
 //@Path("/smgweb")
-@ServerEndpoint(value = "/{username}")
+@ServerEndpoint(value = "/{username}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
 public class GameInterface implements UI {
 
     private static Game game = Singleton.getIstanza();
