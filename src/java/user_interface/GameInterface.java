@@ -21,6 +21,8 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import com.google.gson.Gson;
+import dominio.MsgShowMessage;
+import javax.websocket.EncodeException;
 import singleton.Singleton;
 
 @ServerEndpoint(value = "/{username}")
@@ -43,16 +45,14 @@ public class GameInterface implements UI {
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) throws IOException {
-        //Fino ad ora abbiamo (ho) sbagliato tutto, non dobbiamo lavorare con i fetch ma con i send, qua va messo tutto il codice
-        
-        
-        
-        System.out.println("Messaggio ricevuto: " + message);
-        for (Session s : session.getOpenSessions()) {
-            if (s.isOpen()) {
-                s.getBasicRemote().sendText("Messaggio da " + users.get(session.getId()) + ": " + message);
-            }
+    public void onMessage(Session session, Message message) {
+        message.setFrom(users.get(session.getId()));
+        try {
+            broadcast(message);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        } catch (EncodeException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -68,9 +68,22 @@ public class GameInterface implements UI {
         throwable.printStackTrace();
     }
 
+    private static void broadcast(Message message)
+            throws IOException, EncodeException {
+        gameEndpoints.forEach(endpoint -> {
+            synchronized (endpoint) {
+                try {
+                    endpoint.session.getBasicRemote().sendObject(message);
+                } catch (IOException | EncodeException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     @Override
     public Message showMessage(String msg) {
-        Message message = new Message(users.get(session.getId()), "broadcast", msg);
+        MsgShowMessage message = new MsgShowMessage(users.get(session.getId()), "broadcast", msg);
         String json = gson.toJson(message);
         gameEndpoints.removeIf(endpoint -> {
             try {
@@ -115,14 +128,14 @@ public class GameInterface implements UI {
                 "broadcast",
                 new BoardCarte(board, manoCarte)
         );
-        String json = gson.toJson(msg); 
+        String json = gson.toJson(msg);
         gameEndpoints.removeIf(endpoint -> {
             try {
                 Session s = endpoint.session;
                 if (s == null || !s.isOpen()) {
                     return true;
                 }
-                s.getBasicRemote().sendText(json); 
+                s.getBasicRemote().sendText(json);
             } catch (IOException ex) {
                 Logger.getLogger(GameInterface.class.getName()).log(Level.SEVERE, null, ex);
                 return true;
@@ -134,6 +147,6 @@ public class GameInterface implements UI {
 
     @Override
     public void makeMove() {
-        // Da implementare se serve in futuro
+        
     }
 }

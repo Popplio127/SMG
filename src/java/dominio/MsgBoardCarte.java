@@ -2,36 +2,17 @@ package dominio;
 
 import java.io.Serializable;
 
-public class MsgBoardCarte implements Serializable, Cloneable {
+public class MsgBoardCarte extends Message implements Serializable, Cloneable {
 
-    private String from;
-    private String to;
     private BoardCarte content;
 
-    //standard constructors, getters, setters
-    public MsgBoardCarte() {
-    }
-
-    public MsgBoardCarte(String from, String to, BoardCarte content) {
-        this.from = from;
-        this.to = to;
+    public MsgBoardCarte(BoardCarte content) {
         this.content = content;
     }
 
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
+    public MsgBoardCarte(String from, String to, BoardCarte content) {
+        super(from, to);
+        this.content = content;
     }
 
     public BoardCarte getContent() {

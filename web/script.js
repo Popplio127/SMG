@@ -8,6 +8,7 @@ const fineTurnoBtn = document.getElementById("fineTurno");
 let campo = [];
 let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
+let carte = [];
 
 const socket = new WebSocket('ws://localhost:8080/smgweb/');
 const nome = prompt("Inserire il nome");

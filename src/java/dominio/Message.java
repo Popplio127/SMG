@@ -2,20 +2,17 @@ package dominio;
 
 import java.io.Serializable;
 
-public class Message implements Serializable, Cloneable {
+public abstract class Message implements Serializable, Cloneable {
 
     private String from;
     private String to;
-    private String content;
 
-    //standard constructors, getters, setters
     public Message() {
     }
 
-    public Message(String from, String to, String content) {
+    public Message(String from, String to) {
         this.from = from;
         this.to = to;
-        this.content = content;
     }
 
     public String getFrom() {
@@ -32,14 +29,6 @@ public class Message implements Serializable, Cloneable {
 
     public void setTo(String to) {
         this.to = to;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
 }
