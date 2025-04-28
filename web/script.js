@@ -10,26 +10,16 @@ let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
 
 const socket = new WebSocket('ws://localhost:8080/smgweb/');
+const nome = prompt("Inserire il nome");
 
 socket.addEventListener('open', () => {
-    const nome = prompt("Inserire il nome");
     console.log(nome + " si è connesso!");
     socket.send(nome);
     alert(nome + " ti sei connesso!");
 });
 
 socket.addEventListener('message', event => {
-    try {
-        const msg = JSON.parse(event.data);
-        console.log("Messaggio socket ricevuto:", msg);
-
-        if (msg.tipo === "aggiornaBoard") {
-            const {board, carte} = msg.contenuto;
-            aggiornaCampo(board, carte);
-        }
-    } catch (e) {
-        alert(event.data); // fallback per stringhe semplici
-    }
+    aggiornaCampo(board, carte);
 });
 
 // Inizializza griglia
@@ -58,7 +48,7 @@ tiraDadoBtn.addEventListener("click", () => {
             alert("Risposta nulla");
             return null;
         }
-        return response.json();
+        return response.text();
     }).then(rispostaFinale => {
         alert("Hai fatto il numero: " + rispostaFinale);
     });

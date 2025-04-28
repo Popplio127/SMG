@@ -44,6 +44,10 @@ public class GameInterface implements UI {
 
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
+        //Fino ad ora abbiamo (ho) sbagliato tutto, non dobbiamo lavorare con i fetch ma con i send, qua va messo tutto il codice
+        
+        
+        
         System.out.println("Messaggio ricevuto: " + message);
         for (Session s : session.getOpenSessions()) {
             if (s.isOpen()) {
@@ -68,7 +72,6 @@ public class GameInterface implements UI {
     public Message showMessage(String msg) {
         Message message = new Message(users.get(session.getId()), "broadcast", msg);
         String json = gson.toJson(message);
-
         gameEndpoints.removeIf(endpoint -> {
             try {
                 Session s = endpoint.session;
@@ -82,7 +85,6 @@ public class GameInterface implements UI {
             }
             return false;
         });
-
         return message;
     }
 
@@ -90,7 +92,6 @@ public class GameInterface implements UI {
     public void setIsDadoTirato(boolean isDadoTirato) {
         MsgDadoTirato msg = new MsgDadoTirato(users.get(session.getId()), "broadcast", isDadoTirato);
         String json = gson.toJson(msg);
-
         gameEndpoints.removeIf(endpoint -> {
             try {
                 Session s = endpoint.session;
