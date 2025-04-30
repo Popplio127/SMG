@@ -10,8 +10,8 @@ let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
 let carte = [];
 
-const socket = new WebSocket('ws://localhost:8080/smgweb/');
 const nome = prompt("Inserire il nome");
+const socket = new WebSocket('ws://localhost:8080/smgweb/' + nome);
 
 socket.addEventListener('open', () => {
     console.log(nome + " si è connesso!");
@@ -176,15 +176,15 @@ function aggiornaCampo(board, manoCarte) {
         slot.addEventListener("click", () => usaCarta(i));
         carteContainer.appendChild(slot);
     });
-    // Invia la nuova board via WebSocket
-    if (socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({
-            tipo: "aggiornaBoard",
-            contenuto: {
-                board: board,
-                carte: manoCarte
-            }
-        }));
-    }
+//    // Invia la nuova board via WebSocket
+//    if (socket.readyState === WebSocket.OPEN) {
+//        socket.send(JSON.stringify({
+//            tipo: "aggiornaBoard",
+//            contenuto: {
+//                board: board,
+//                carte: manoCarte
+//            }
+//        }));
+//    }
 }
 
