@@ -4,25 +4,17 @@ import dominio.BoardCarte;
 import dominio.Carta;
 import dominio.Message;
 import javax.websocket.Session;
-import com.google.gson.Gson;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import servizi.GestoreWS;
 
 public class GameUI implements UI {
 
     private final Session session;
-    private final Set<GestoreWS> endpoints;
     private final Map<String, String> users;
-    private static final Gson gson = new Gson();
 
-    public GameUI(Session session, Set<GestoreWS> endpoints, Map<String, String> users) {
+    public GameUI(Session session, Map<String, String> users) {
         this.session = session;
-        this.endpoints = endpoints;
         this.users = users;
     }
 
@@ -37,7 +29,6 @@ public class GameUI implements UI {
     public void setIsDadoTirato(boolean isDadoTirato) {
         Message<Boolean> message = new Message<>(users.get(session.getId()), "broadcast", isDadoTirato);
         GestoreWS.broadcastMessage(session.getId(), message);
-
     }
 
     @Override

@@ -10,19 +10,30 @@ let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
 
 const nome = prompt("Inserire il nome");
-const socket = new WebSocket("ws/" + nome);
+const socket = new WebSocket("ws://localhost:8080/smgweb/" + nome);
 
 socket.addEventListener('open', () => {
     console.log(nome + " si è connesso!");
-    socket.send(nome);
+    // socket.send(nome); // opzionale
     alert(nome + " ti sei connesso!");
 });
 
+socket.addEventListener('error', (err) => {
+    console.error("Server non raggiungibile: ", err);
+});
+
 socket.addEventListener('message', event => {
-    
-    
-    
-    aggiornaCampo(board, carte);
+    console.log("Messaggio ricevuto:", event.data);
+    try {
+        const data = JSON.parse(event.data);
+        aggiornaCampo(data.board, data.carte);
+    } catch (e) {
+        console.log("Messaggio non JSON o formato sconosciuto:", event.data);
+    }
+});
+
+socket.addEventListener('close', () => {
+    console.log("Connessione WS chiusa");
 });
 
 // Inizializza griglia

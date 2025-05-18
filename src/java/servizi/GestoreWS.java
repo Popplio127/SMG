@@ -19,7 +19,11 @@ import javax.websocket.server.ServerEndpoint;
 import singleton.Singleton;
 import user_interface.GameUI;
 
-@ServerEndpoint(value = "/{username}")
+@ServerEndpoint(
+        value = "/{username}",
+        encoders = {MessageEncoder.class},
+        decoders = {MessageDecoder.class}
+)
 public class GestoreWS {
 
     private Session session;
@@ -30,10 +34,11 @@ public class GestoreWS {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException {
+        //System.out.println(session + " " + username);
         this.session = session;
         endpoints.add(this);
         users.put(session.getId(), username);
-        game.setUi(new GameUI(session, endpoints, users));
+        game.setUi(new GameUI(session, users));
         System.out.println("Nuovo utente connesso: " + username + " (session: " + session.getId() + ")");
         session.getBasicRemote().sendText("Benvenuto, " + username + "!");
     }
