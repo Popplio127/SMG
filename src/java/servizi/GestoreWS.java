@@ -20,7 +20,7 @@ import singleton.Singleton;
 import user_interface.GameUI;
 
 @ServerEndpoint(
-        value = "/{username}",
+        value = "/smgweb/{username}",
         encoders = {MessageEncoder.class},
         decoders = {MessageDecoder.class}
 )
