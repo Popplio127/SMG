@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -63,7 +65,20 @@ public class GestoreWS {
         throwable.printStackTrace();
     }
 
-    public Session getSession() {
-        return session;
+    public static <T> void broadcastMessage(String senderSessionId, Message<T> message) {
+        String json = gson.toJson(message);
+        endpoints.removeIf(endpoint -> {
+            try {
+                Session s = endpoint.session;
+                if (s == null || !s.isOpen()) {
+                    return true;
+                }
+                s.getBasicRemote().sendText(json);
+            } catch (IOException ex) {
+                Logger.getLogger(GestoreWS.class.getName()).log(Level.SEVERE, null, ex);
+                return true;
+            }
+            return false;
+        });
     }
 }

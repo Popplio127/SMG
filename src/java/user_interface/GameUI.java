@@ -29,47 +29,27 @@ public class GameUI implements UI {
     @Override
     public Message<String> showMessage(String msg) {
         Message<String> message = new Message<>(users.get(session.getId()), "broadcast", msg);
-        broadcastMessage(message);
+        GestoreWS.broadcastMessage(session.getId(), message);
         return message;
     }
 
     @Override
     public void setIsDadoTirato(boolean isDadoTirato) {
-        Message<Boolean> msg = new Message<>(users.get(session.getId()), "broadcast", isDadoTirato);
-        broadcastMessage(msg);
+        Message<Boolean> message = new Message<>(users.get(session.getId()), "broadcast", isDadoTirato);
+        GestoreWS.broadcastMessage(session.getId(), message);
+
     }
 
     @Override
     public Message<BoardCarte> showBoard(String[][] board, List<Carta> manoCarte) {
         System.out.println("Invio nuova board ai client WebSocket");
-        Message<BoardCarte> msg = new Message<>(
-                users.get(session.getId()),
-                "broadcast",
-                new BoardCarte(board, manoCarte)
-        );
-        broadcastMessage(msg);
-        return msg;
+        Message<BoardCarte> message = new Message<>(users.get(session.getId()), "broadcast", new BoardCarte(board, manoCarte));
+        GestoreWS.broadcastMessage(session.getId(), message);
+        return message;
     }
 
     @Override
     public void makeMove() {
         // Implementazione futura se necessaria
-    }
-
-    private <T> void broadcastMessage(Message<T> message) {
-        String json = gson.toJson(message);
-        endpoints.removeIf(endpoint -> {
-            try {
-                Session s = endpoint.getSession();
-                if (s == null || !s.isOpen()) {
-                    return true;
-                }
-                s.getBasicRemote().sendText(json);
-            } catch (IOException ex) {
-                Logger.getLogger(GameUI.class.getName()).log(Level.SEVERE, null, ex);
-                return true;
-            }
-            return false;
-        });
     }
 }
