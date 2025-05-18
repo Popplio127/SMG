@@ -8,10 +8,9 @@ const fineTurnoBtn = document.getElementById("fineTurno");
 let campo = [];
 let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
-let carte = [];
 
 const nome = prompt("Inserire il nome");
-const socket = new WebSocket('ws://localhost:8080/smgweb/' + nome);
+const socket = new WebSocket("ws/" + nome);
 
 socket.addEventListener('open', () => {
     console.log(nome + " si è connesso!");
@@ -20,6 +19,9 @@ socket.addEventListener('open', () => {
 });
 
 socket.addEventListener('message', event => {
+    
+    
+    
     aggiornaCampo(board, carte);
 });
 
@@ -75,8 +77,15 @@ fineTurnoBtn.addEventListener("click", () => {
             "content-type": "text/plain"
         },
         body: nome
+    }).then(risposta => {
+        if (!risposta.ok) {
+            return null;
+        }
+        return risposta.text();
+    }).then(txtRisposta => {
+        alert(txtRisposta);
     });
-    alert("Turno finito.");
+    //alert("Turno finito.");
     fineTurnoBtn.disabled = true;
 });
 // Gestione click su celle
@@ -85,7 +94,6 @@ function onCellClick(e) {
     const col = +e.target.dataset.col;
     console.log(`Hai cliccato sulla cella: ${row}, ${col}`);
     if (isPiazzaPedinaPressed) {
-        //e.target.textContent = "🟢"; // questo lo fa game, tu leggi solo la board
         const pedina = {x: row, y: col};
         fetch('http://localhost:8080/smgweb/api/piazzapedina', {
             method: 'POST',
@@ -123,7 +131,7 @@ function bloccaCampo() {
 }
 
 function aggiornaCampo(board, manoCarte) {
-    // Aggiorna il campo con la matrice board
+// Aggiorna il campo con la matrice board
     for (let i = 0; i < RIGA; i++) {
         for (let j = 0; j < COLONNA; j++) {
             const cell = campo[i][j];
