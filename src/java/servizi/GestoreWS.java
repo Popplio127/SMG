@@ -19,7 +19,7 @@ import javax.websocket.server.ServerEndpoint;
 import singleton.Singleton;
 import user_interface.GameUI;
 
-@ServerEndpoint(value = "/{username}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
+@ServerEndpoint(value = "ws/{username}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 public class GestoreWS {
 
     private Session session;

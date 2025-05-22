@@ -10,7 +10,7 @@ let isDadoTirato = false;
 let isPiazzaPedinaPressed = false;
 
 const nome = prompt("Inserire il nome");
-const socket = new WebSocket('ws://localhost:8080/smgweb/' + nome);
+const socket = new WebSocket('ws://localhost:8080/smgweb/ws/' + nome);
 
 socket.addEventListener('open', () => {
     console.log(nome + " si è connesso!");
