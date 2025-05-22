@@ -14,7 +14,6 @@ const socket = new WebSocket("ws://localhost:8080/smgweb/" + nome);
 
 socket.addEventListener('open', () => {
     console.log(nome + " si è connesso!");
-    // socket.send(nome); // opzionale
     alert(nome + " ti sei connesso!");
 });
 
@@ -26,7 +25,7 @@ socket.addEventListener('message', event => {
     console.log("Messaggio ricevuto:", event.data);
     try {
         const data = JSON.parse(event.data);
-        aggiornaCampo(data.board, data.carte);
+        aggiornaCampo(data.campo, data.manoCarte);
     } catch (e) {
         console.log("Messaggio non JSON o formato sconosciuto:", event.data);
     }
@@ -52,7 +51,7 @@ for (let i = 0; i < RIGA; i++) {
 
 // Eventi pulsanti
 tiraDadoBtn.addEventListener("click", () => {
-    fetch("http://localhost:8080/smgweb/api/tiradado", {
+    fetch("http://localhost:8080/smgweb/api/mossa/tiradado", {
         method: "POST",
         headers: {
             "content-type": "text/plain"
@@ -80,7 +79,7 @@ piazzaPedinaBtn.addEventListener("click", () => {
 
 fineTurnoBtn.addEventListener("click", () => {
     isDadoTirato = false;
-    fetch("http://localhost:8080/smgweb/api/fineturno", {
+    fetch("http://localhost:8080/smgweb/api/mossa/fineturno", {
         method: "POST",
         headers: {
             "content-type": "text/plain"
@@ -104,7 +103,7 @@ function onCellClick(e) {
     console.log(`Hai cliccato sulla cella: ${row}, ${col}`);
     if (isPiazzaPedinaPressed) {
         const pedina = {x: row, y: col};
-        fetch('http://localhost:8080/smgweb/api/piazzapedina', {
+        fetch('http://localhost:8080/smgweb/api/mossa/piazzapedina', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
