@@ -59,13 +59,12 @@ tiraDadoBtn.addEventListener("click", () => {
         }
     }).then(response => {
         if (!response.ok) {
-            alert("Risposta nulla");
-            return null;
+            throw new Error("Errore in tiraDado");
         }
         return response.text();
     }).then(rispostaFinale => {
         alert("Hai fatto il numero: " + rispostaFinale);
-    });
+    }).catch(e => alert(e));
     isDadoTirato = true;
     alert("Hai tirato il dado!");
     fineTurnoBtn.disabled = false;
@@ -81,7 +80,6 @@ piazzaPedinaBtn.addEventListener("click", () => {
 
 fineTurnoBtn.addEventListener("click", () => {
     isDadoTirato = false;
-    const nome = "Pierpaolo";
     fetch("http://localhost:8080/smgweb/api/fineturno", {
         method: "POST",
         headers: {
@@ -90,12 +88,12 @@ fineTurnoBtn.addEventListener("click", () => {
         body: nome
     }).then(risposta => {
         if (!risposta.ok) {
-            return null;
+            throw new Error("Errore in fine turno");
         }
         return risposta.text();
     }).then(txtRisposta => {
         alert(txtRisposta);
-    });
+    }).catch(e => alert(e));
     //alert("Turno finito.");
     fineTurnoBtn.disabled = true;
 });
@@ -113,6 +111,9 @@ function onCellClick(e) {
             },
             body: JSON.stringify(pedina)
         }).then(response => {
+            if (!response.ok) {
+                throw new Error("errore nel fetch di onCellClick");
+            }
             return response.json();
         }).then(data => {
             const contenuto = data.content;
@@ -120,7 +121,7 @@ function onCellClick(e) {
             const carte = contenuto.carte;
             console.log(board);
             aggiornaCampo(board, carte);
-        });
+        }).catch(e => alert(e));
     }
     bloccaCampo();
     isPiazzaPedinaPressed = false;
@@ -195,15 +196,5 @@ function aggiornaCampo(board, manoCarte) {
         slot.addEventListener("click", () => usaCarta(i));
         carteContainer.appendChild(slot);
     });
-//    // Invia la nuova board via WebSocket
-//    if (socket.readyState === WebSocket.OPEN) {
-//        socket.send(JSON.stringify({
-//            tipo: "aggiornaBoard",
-//            contenuto: {
-//                board: board,
-//                carte: manoCarte
-//            }
-//        }));
-//    }
 }
 
