@@ -1,7 +1,6 @@
 package singleton;
 
 import game.Game;
-import user_interface.UI;
 
 public class Singleton {
 
