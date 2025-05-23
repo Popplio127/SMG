@@ -1,4 +1,4 @@
-const RIGA = 15;
+    const RIGA = 15;
 const COLONNA = 8;
 const board = document.getElementById("campo");
 const carteContainer = document.getElementById("carte");

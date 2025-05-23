@@ -16,6 +16,8 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import servizi.MessageDecoder;
+import servizi.MessageEncoder;
 import singleton.Singleton;
 import user_interface.GameUI;
 
