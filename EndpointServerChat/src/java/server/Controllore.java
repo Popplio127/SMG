@@ -37,7 +37,7 @@ public class Controllore {
     public void onMessage(Session session, Message message) {
         message.setFrom(users.get(session.getId()));
         try {
-            broadcast(message);
+            broadcastMenoUno(message, session);
         } catch (IOException | EncodeException ex) {
             Logger.getLogger(Controllore.class.getName()).log(Level.SEVERE, null, ex);
         }
