@@ -1,14 +1,18 @@
 package dominio;
 
-public class User {
+import persistenza.Persistibile;
 
+public class User implements Persistibile<String> {
+
+    private String id;
     private String username;
     private String password;
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String id, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
     }
@@ -27,6 +31,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String getChiave() {
+        return id;
+    }
+
+    @Override
+    public User clone() {
+        try {
+            return (User) super.clone();
+        } catch (CloneNotSupportedException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
 
 }

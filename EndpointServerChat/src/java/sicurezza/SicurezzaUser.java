@@ -1,25 +1,28 @@
 package sicurezza;
 
 import dominio.User;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import operazioni.OperazioniSuUser;
 
 public class SicurezzaUser {
 
-    private static final ConcurrentMap<String, User> ELENCO_USER_AUTENTICATI = new ConcurrentHashMap<>();
+    private static final OperazioniSuUser operazioniSuUser = new OperazioniSuUser();
 
-    static {
-        //ELENCO_USER_AUTENTICATI.put(key, value);
-    }
-
-    public static User controlloCredenziali(String username, String password) {
-        if (username.isEmpty() || password.isEmpty()) {
+    public static User controlloCredenziali(String id) {
+        if (id.isEmpty()) {
             return null;
         }
-        User userDaVerificare = ELENCO_USER_AUTENTICATI.get(username);
-        if (username.equals(userDaVerificare.getUsername()) && password.equals(userDaVerificare.getPassword())) {
+        User userDaVerificare = operazioniSuUser.read(id);
+        if (userDaVerificare == null) {
+            return null;
+        }
+        if (id.equals(userDaVerificare.getChiave())) {
             return userDaVerificare;
         }
         return null;
+    }
+
+    public static User creaUser(User user) {
+        operazioniSuUser.create(user);
+        return operazioniSuUser.read(user.getChiave());
     }
 }
