@@ -8,8 +8,7 @@ public class User implements Persistibile<String> {
     private String username;
     private String password;
 
-    public User() {
-    }
+    public User() { }
 
     public User(String id, String username, String password) {
         this.id = id;
@@ -46,6 +45,11 @@ public class User implements Persistibile<String> {
             System.out.println(ex.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + '}';
     }
 
 }

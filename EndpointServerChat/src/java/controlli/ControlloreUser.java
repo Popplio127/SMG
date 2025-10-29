@@ -1,6 +1,7 @@
 package controlli;
 
 import dominio.User;
+import java.util.List;
 import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -9,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import operazioni.OperazioniSuUser;
 import sicurezza.SicurezzaUser;
 
 @Path("/user")
@@ -30,10 +32,18 @@ public class ControlloreUser {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registraUser(User user) {
+        System.out.println(user);
         User userCreato = SicurezzaUser.creaUser(user);
-        if(userCreato != null){
+        if (userCreato != null) {
             return Response.ok(userCreato).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
+    @GET
+    @Path("/utentiLoggati")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> utentiLoggati() {
+        return new OperazioniSuUser().elencoCompleto();
     }
 }
