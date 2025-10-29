@@ -26,6 +26,7 @@ public class ControlloreUser {
     }
 
     @POST
+    @Path("/registraUser")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registraUser(User user) {
