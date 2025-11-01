@@ -8,4 +8,8 @@
       <description>Keep a copy of the generated servlet class' java code.</description>
     </property>
   </jsp-config>
+  <mime-mapping>
+    <extension>apk</extension>
+    <mime-type>application/vnd.android.package-archive</mime-type>
+  </mime-mapping>
 </glassfish-web-app>
