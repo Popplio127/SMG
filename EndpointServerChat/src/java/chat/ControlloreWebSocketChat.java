@@ -1,5 +1,7 @@
 package chat;
 
+import criptografia.MessageEncoder;
+import criptografia.MessageDecoder;
 import dominio.Message;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -15,10 +17,10 @@ import java.util.logging.Logger;
         decoders = {MessageDecoder.class},
         encoders = {MessageEncoder.class}
 )
-public class Controllore {
+public class ControlloreWebSocketChat {
 
     private Session session;
-    private static Set<Controllore> chatEndpoints = new CopyOnWriteArraySet<>();
+    private static Set<ControlloreWebSocketChat> chatEndpoints = new CopyOnWriteArraySet<>();
     private static Map<String, String> users = new HashMap<>();
 
     @OnOpen
@@ -39,7 +41,7 @@ public class Controllore {
         try {
             broadcastMenoUno(message, session);
         } catch (IOException | EncodeException ex) {
-            Logger.getLogger(Controllore.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControlloreWebSocketChat.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

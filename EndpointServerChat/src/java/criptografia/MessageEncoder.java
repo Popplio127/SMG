@@ -1,4 +1,4 @@
-package chat;
+package criptografia;
 
 import dominio.Message;
 import com.google.gson.Gson;
