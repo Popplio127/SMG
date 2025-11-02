@@ -22,6 +22,7 @@ public class ControlloreUser {
     public Response getUser(@PathParam("id") String id) {
         User userVerificato = SicurezzaUser.controlloCredenziali(id);
         if (userVerificato == null) {
+            System.out.println(userVerificato);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(userVerificato).build();
@@ -32,9 +33,9 @@ public class ControlloreUser {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registraUser(User user) {
-        System.out.println(user);
         User userCreato = SicurezzaUser.creaUser(user);
         if (userCreato != null) {
+            System.out.println(userCreato);
             return Response.ok(userCreato).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();

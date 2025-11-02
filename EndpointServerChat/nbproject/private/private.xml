@@ -5,9 +5,11 @@
         <group>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/server/MessageDecoder.java</file>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/servizi/MyApp.java</file>
+            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/tris/ITrisGame.java</file>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/controlli/ControlloreUser.java</file>
+            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/tris/GameTris.java</file>
+            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/dominio/Punto.java</file>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/server/Controllore.java</file>
-            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/web/WEB-INF/glassfish-web.xml</file>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/dominio/User.java</file>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/sicurezza/SicurezzaUser.java</file>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/web/index.html</file>

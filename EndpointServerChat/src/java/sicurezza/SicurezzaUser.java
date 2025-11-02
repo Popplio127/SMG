@@ -22,7 +22,6 @@ public class SicurezzaUser {
     }
 
     public static User creaUser(User user) {
-        System.out.println(user);
         operazioniSuUser.create(user);
         return operazioniSuUser.read(user.getChiave());
     }
