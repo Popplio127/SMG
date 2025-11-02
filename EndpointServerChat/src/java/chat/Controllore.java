@@ -1,4 +1,4 @@
-package server;
+package chat;
 
 import dominio.Message;
 import javax.websocket.*;
