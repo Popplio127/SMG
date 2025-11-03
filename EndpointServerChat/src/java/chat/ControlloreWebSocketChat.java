@@ -1,7 +1,7 @@
 package chat;
 
-import criptografia.MessageEncoder;
-import criptografia.MessageDecoder;
+import crittografia.MessageEncoder;
+import crittografia.MessageDecoder;
 import dominio.Message;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;

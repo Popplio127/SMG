@@ -1,6 +1,8 @@
 package dominio;
 
+import crittografia.PasswordEncryptConverter;
 import java.io.Serializable;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,6 +16,7 @@ public class Utente implements Serializable {
     @Id
     private String id;
     private String username;
+    //@Convert(converter = PasswordEncryptConverter.class)
     private String password;
 
     public Utente() {

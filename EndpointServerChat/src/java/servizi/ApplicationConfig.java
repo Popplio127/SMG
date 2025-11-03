@@ -5,7 +5,7 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("api") 
+@ApplicationPath("api")
 public class ApplicationConfig extends Application {
 
     @Override
@@ -18,7 +18,5 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(servizi.UserFacadeREST.class);
         resources.add(tris.GameTris.class);
-        resources.add(chat.ControlloreWebSocketChat.class);
-        resources.add(tris.ControlloreWebSocketTris.class);
     }
 }

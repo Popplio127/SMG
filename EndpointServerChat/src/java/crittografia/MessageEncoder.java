@@ -1,4 +1,4 @@
-package criptografia;
+package crittografia;
 
 import dominio.Message;
 import com.google.gson.Gson;

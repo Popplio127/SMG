@@ -2,13 +2,16 @@ package tris;
 
 import com.google.gson.Gson;
 import dominio.Punto;
+import dominio.StatoTris;
+import javax.ejb.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/tris")
-public class GameTris implements ITrisGame {
+@Singleton
+public class GameTris {
 
-    private String[][] board = new String[3][3];
+    private static String[][] board = new String[3][3];
     private boolean[][] win = new boolean[3][3];
     private String currentPlayer = "X";
     public boolean gameOver = false;
@@ -29,27 +32,45 @@ public class GameTris implements ITrisGame {
         gameOver = false;
     }
 
-    @Path("/turno")
     @POST
+    @Path("/turno")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Override
     public Response turno(Punto p) {
         int r = p.getR();
         int c = p.getC();
+
         if (gameOver || !board[r][c].equals("")) {
-            return Response.ok(gson.toJson(board)).build();
+            return Response.ok(gson.toJson(new StatoTris(board, currentPlayer))).build();
         }
         board[r][c] = currentPlayer;
-        if (checkWinner()) {
+        if (checkWinner() || isBoardFull()) {
             gameOver = true;
-            return Response.ok(gson.toJson(board)).build();
-        } else if (isBoardFull()) {
-            gameOver = true;
-            return Response.ok(gson.toJson(board)).build();
+        } else {
+            currentPlayer = currentPlayer.equals("X") ? "O" : "X";
+            System.out.println("asdoiuad: " + currentPlayer);
         }
-        currentPlayer = currentPlayer.equals("X") ? "O" : "X";
-        return Response.ok(gson.toJson(board)).build();
+        StatoTris state = new StatoTris(board, currentPlayer);
+        System.out.println(state);
+        stampa();
+        return Response.ok(gson.toJson(state)).build();
+    }
+
+    @GET
+    @Path("/reset")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response reset() {
+        resetBoard();
+        StatoTris state = new StatoTris(board, currentPlayer);
+        return Response.ok(gson.toJson(state)).build();
+    }
+
+    @GET
+    @Path("/getWin")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getWin() {
+        System.out.println(win);
+        return Response.ok(gson.toJson(win)).build();
     }
 
     private boolean checkWinner() {
@@ -85,20 +106,16 @@ public class GameTris implements ITrisGame {
         return true;
     }
 
-    @Path("/reset")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Override
-    public Response reset() {
-        resetBoard();
-        return Response.ok(gson.toJson(board)).build();
-    }
-
-    @Path("/getWin")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Override
-    public Response getWin() {
-        return Response.ok(gson.toJson(win)).build();
+    private void stampa() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(board[i][j].equals("")){
+                    System.out.println("*");
+                } else {
+                    System.out.print(board[i][j]);
+                }
+            }
+            System.out.println("");
+        }
     }
 }
