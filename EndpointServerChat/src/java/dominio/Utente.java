@@ -1,17 +1,25 @@
 package dominio;
 
-import java.util.logging.Logger;
-import persistenza.Persistibile;
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
-public class User implements Persistibile<String> {
+@Entity
+@XmlRootElement
+@Table(name = "UTENTE") 
+public class Utente implements Serializable {
 
+    @Id
     private String id;
     private String username;
     private String password;
 
-    public User() { }
+    public Utente() {
+    }
 
-    public User(String id, String username, String password) {
+    public Utente(String id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -37,26 +45,8 @@ public class User implements Persistibile<String> {
         return id;
     }
 
-    
-    
     public void setId(String id) {
         this.id = id;
-    }
-     
-
-    @Override
-    public String getChiave() {
-        return id;
-    }
-
-    @Override
-    public User clone() {
-        try {
-            return (User) super.clone();
-        } catch (CloneNotSupportedException ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
     }
 
     @Override

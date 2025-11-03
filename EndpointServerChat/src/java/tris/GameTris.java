@@ -1,5 +1,6 @@
 package tris;
 
+import com.google.gson.Gson;
 import dominio.Punto;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -11,6 +12,7 @@ public class GameTris implements ITrisGame {
     private boolean[][] win = new boolean[3][3];
     private String currentPlayer = "X";
     public boolean gameOver = false;
+    private Gson gson = new Gson();
 
     public GameTris() {
         resetBoard();
@@ -35,57 +37,44 @@ public class GameTris implements ITrisGame {
     public Response turno(Punto p) {
         int r = p.getR();
         int c = p.getC();
-
         if (gameOver || !board[r][c].equals("")) {
-            return Response.ok(board).build();
+            return Response.ok(gson.toJson(board)).build();
         }
-
         board[r][c] = currentPlayer;
-
-        if (checkWinnerInternal()) {
+        if (checkWinner()) {
             gameOver = true;
-            return Response.ok(board).build();
-        } else if (isBoardFullInternal()) {
+            return Response.ok(gson.toJson(board)).build();
+        } else if (isBoardFull()) {
             gameOver = true;
-            return Response.ok(board).build();
+            return Response.ok(gson.toJson(board)).build();
         }
-
         currentPlayer = currentPlayer.equals("X") ? "O" : "X";
-        return Response.ok(board).build();
+        return Response.ok(gson.toJson(board)).build();
     }
 
-    private boolean checkWinnerInternal() {
+    private boolean checkWinner() {
         for (int i = 0; i < 3; i++) {
-            if (board[i][0].equals(currentPlayer)
-                    && board[i][1].equals(currentPlayer)
-                    && board[i][2].equals(currentPlayer)) {
+            if (board[i][0].equals(currentPlayer) && board[i][1].equals(currentPlayer) && board[i][2].equals(currentPlayer)) {
                 win[i][0] = win[i][1] = win[i][2] = true;
                 return true;
             }
-            if (board[0][i].equals(currentPlayer)
-                    && board[1][i].equals(currentPlayer)
-                    && board[2][i].equals(currentPlayer)) {
+            if (board[0][i].equals(currentPlayer) && board[1][i].equals(currentPlayer) && board[2][i].equals(currentPlayer)) {
                 win[0][i] = win[1][i] = win[2][i] = true;
                 return true;
             }
         }
-        // diagonali
-        if (board[0][0].equals(currentPlayer)
-                && board[1][1].equals(currentPlayer)
-                && board[2][2].equals(currentPlayer)) {
+        if (board[0][0].equals(currentPlayer) && board[1][1].equals(currentPlayer) && board[2][2].equals(currentPlayer)) {
             win[0][0] = win[1][1] = win[2][2] = true;
             return true;
         }
-        if (board[0][2].equals(currentPlayer)
-                && board[1][1].equals(currentPlayer)
-                && board[2][0].equals(currentPlayer)) {
+        if (board[0][2].equals(currentPlayer) && board[1][1].equals(currentPlayer) && board[2][0].equals(currentPlayer)) {
             win[0][2] = win[1][1] = win[2][0] = true;
             return true;
         }
         return false;
     }
 
-    private boolean isBoardFullInternal() {
+    private boolean isBoardFull() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j].equals("")) {
@@ -96,29 +85,13 @@ public class GameTris implements ITrisGame {
         return true;
     }
 
-    @Path("/checkWinner")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Override
-    public Response checkWinner() {
-        return Response.ok(checkWinnerInternal()).build();
-    }
-
-    @Path("/isBoardFull")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Override
-    public Response isBoardFull() {
-        return Response.ok(isBoardFullInternal()).build();
-    }
-
     @Path("/reset")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public Response reset() {
         resetBoard();
-        return Response.ok(board).build();
+        return Response.ok(gson.toJson(board)).build();
     }
 
     @Path("/getWin")
@@ -126,7 +99,6 @@ public class GameTris implements ITrisGame {
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public Response getWin() {
-        return Response.ok(win).build();
+        return Response.ok(gson.toJson(win)).build();
     }
-
 }

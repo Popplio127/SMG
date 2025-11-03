@@ -1,0 +1,10 @@
+<persistence-unit name="EndpointServerChatPU" transaction-type="JTA">
+    <jta-data-source>java:app/EndPointServerDB</jta-data-source>
+    <class>dominio.Utente</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+        <property name="eclipselink.ddl-generation" value="create-tables"/>
+        <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+        <property name="eclipselink.logging.level" value="FINE"/>
+    </properties>
+</persistence-unit>

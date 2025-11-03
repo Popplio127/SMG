@@ -3,16 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/server/MessageDecoder.java</file>
-            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/servizi/MyApp.java</file>
+            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/dominio/Message.java</file>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/tris/ITrisGame.java</file>
+            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/chat/ControlloreWebSocketChat.java</file>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/controlli/ControlloreUser.java</file>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/tris/GameTris.java</file>
-            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/dominio/Punto.java</file>
-            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/server/Controllore.java</file>
-            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/dominio/User.java</file>
             <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/sicurezza/SicurezzaUser.java</file>
-            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/web/index.html</file>
+            <file>file:/C:/Users/39347/Documents/NetBeansProjects/AppParticolare/EndpointServerChat/src/java/tris/ControlloreWebSocketTris.java</file>
         </group>
     </open-files>
 </project-private>
