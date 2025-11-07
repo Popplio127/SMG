@@ -1,5 +1,5 @@
 const username = "ServerMonitor";
-const wsUrl = "wss://unscriptural-rootless-flossie.ngrok-free.dev/ChatServer/chat/" + username;
+const wsUrl = "ws//localhost:8080/ChatServer/chat/" + username;
 const ws = new WebSocket(wsUrl);
 const chatDiv = document.getElementById("chat");
 
