@@ -39,15 +39,7 @@ public class ControlloreWebSocketChat {
     public void onMessage(Session session, Message message) {
         message.setFrom(users.get(session.getId()));
         try {
-            switch (message.getType()) {
-                case "0001":
-                    message.setType(session.getId());
-                    inviaA(message, message.getFrom());
-                    break;
-                case "0002":
-                    broadcastMenoUno(message, session);
-                    break;
-            }
+            doActionFromType(session, message);
         } catch (IOException | EncodeException ex) {
             Logger.getLogger(ControlloreWebSocketChat.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,6 +59,18 @@ public class ControlloreWebSocketChat {
     @OnError
     public void onError(Session session, Throwable throwable) {
         System.err.println("Errore WebSocket: " + throwable.getMessage());
+    }
+
+    private void doActionFromType(Session session, Message message) throws IOException, EncodeException {
+        switch (message.getType()) {
+            case "0001":
+                message.setType(session.getId());
+                inviaA(message, message.getFrom());
+                break;
+            case "0002":
+                broadcastMenoUno(message, session);
+                break;
+        }
     }
 
     private static void broadcastMenoUno(Message message, Session sessioneDaIgnorare) throws IOException, EncodeException {
