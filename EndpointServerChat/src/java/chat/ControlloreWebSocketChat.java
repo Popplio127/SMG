@@ -7,8 +7,10 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
+import javax.ws.rs.core.Response;
 
 @ServerEndpoint(
         value = "/chat/{username}",
@@ -154,8 +156,9 @@ public class ControlloreWebSocketChat {
 
     private void apriChat(String sessioneWeb, String sessioneAndroid) {
         try {
-            String url = "http://localhost:8080/ChatServer/ChatReplica.html?webSession=" + sessioneWeb + "&androidSession=" + sessioneAndroid;
+            String url = "http://localhost:8080/ChatServer/ChatClient.html?webSession=" + sessioneWeb + "&androidSession=" + sessioneAndroid;
             java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+            //return Response.seeOther(new URI(".../ChatClient.html")).build();
         } catch (Exception e) {
             e.printStackTrace();
         }
