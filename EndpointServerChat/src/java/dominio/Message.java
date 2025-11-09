@@ -4,6 +4,8 @@ public class Message {
 
     /*Lista di tipologie:
     0001: invio della sessione del server
+    0002: invio dei messaggi ordinari
+    0003: pronto alla replica dei messaggi
     */
     private String type;
     private String from;
