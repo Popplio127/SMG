@@ -1,10 +1,10 @@
 body {
-    font-family: "Poppins", sans-serif;
     margin: 0;
-    padding: 0;
     height: 100vh;
+    font-family: "Poppins", sans-serif;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background: linear-gradient(135deg, #4f46e5, #9333ea, #ec4899);
     background-size: 400% 400%;
     animation: gradientMove 15s ease infinite;
@@ -17,6 +17,24 @@ body {
     100% { background-position: 0% 50%; }
 }
 
+#mainContainer {
+    display: flex;
+    width: 90%;
+    height: 90%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+#chatContainer {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 h2 {
     margin: 0;
     padding: 15px;
@@ -25,7 +43,6 @@ h2 {
     text-transform: uppercase;
     letter-spacing: 1px;
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     border-bottom: 1px solid rgba(255,255,255,0.2);
 }
@@ -36,7 +53,6 @@ h2 {
     padding: 15px;
     margin: 10px 20px;
     background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     display: flex;
@@ -74,7 +90,6 @@ h2 {
     padding: 15px;
     margin: 10px 20px;
     background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
@@ -114,4 +129,68 @@ button:hover {
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(255,255,255,0.4);
     background: rgba(255,255,255,0.3);
+}
+
+#qrContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+#qrContainer h1 {
+    margin-bottom: 30px;
+    font-size: 2em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+#qr {
+    width: 220px;
+    height: 220px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+#qr:hover {
+    transform: rotate(5deg) scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+#showQrBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.message.left {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    align-self: flex-start;
+    border-top-left-radius: 0;
+}
+
+.message.right {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    align-self: flex-end;
+    border-top-right-radius: 0;
+}
+
+#chat {
+    display: flex;
+    flex-direction: column;
 }

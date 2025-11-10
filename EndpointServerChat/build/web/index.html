@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
     <head>
-        <title>Chat WebSocket</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="style/CssChat.css" rel="stylesheet" type="text/css"/>
+        <title>Chat WebSocket</title>
     </head>
     <body>
-        <h2>Chat Monitor</h2>
-        <button id="showQrBtn">Mostra QR</button>
-        <div id="chat"></div>
-        <div id="inputBar">
-            <input type="text" id="msgInput" placeholder="Scrivi un messaggio...">
-            <button id="sendBtn">Invia</button>
+        <div id="mainContainer">
+            <div id="chatContainer">
+                <h2>Chat Monitor</h2>
+                <div id="chat"></div>
+                <div id="inputBar">
+                    <input type="text" id="msgInput" placeholder="Scrivi un messaggio...">
+                    <button id="sendBtn">Invia</button>
+                </div>
+            </div>
+            <div id="qrContainer">
+                <h1>CODICE QR</h1>
+                <img id="qr" alt="QR Code">
+            </div>
         </div>
         <script src="script/ScriptChatServer.js" type="text/javascript"></script>
     </body>

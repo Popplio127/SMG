@@ -23,6 +23,8 @@ public class ControlloreWebSocketChat {
     private static Set<ControlloreWebSocketChat> chatEndpoints = new CopyOnWriteArraySet<>();
     private static Map<String, String> users = new HashMap<>();
     private static Map<String, String> sessioniInterconnesse = new HashMap<>();
+    private String nomeUtente;
+    private String nomeSender;
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException, EncodeException {
@@ -30,20 +32,20 @@ public class ControlloreWebSocketChat {
         session.setMaxIdleTimeout(0);
         chatEndpoints.add(this);
         users.put(session.getId(), username);
-
         Message msg = new Message("0002", "Server", "", username + " Connected!");
         broadcast(msg);
     }
 
     @OnMessage
     public void onMessage(Session session, Message message) {
-        message.setFrom(users.get(session.getId()));
         try {
             switch (message.getType()) {
                 case "0001":
+                    users.put(session.getId(), message.getFrom());
                     doActionFromType(session, message);
                     break;
                 case "0002":
+                    message.setFrom(users.get(session.getId()));
                     broadcastMenoUno(message, session);
                     break;
             }
@@ -77,13 +79,11 @@ public class ControlloreWebSocketChat {
                 } else {
                     String sessioneWeb = content;
                     String sessioneAndroid = session.getId();
-                    System.out.println("Autenticazione da Android:");
-                    System.out.println("sessione letta dal QR: " + sessioneWeb);
-                    System.out.println("sessioni note sul server: " + users.keySet());
-                    System.out.println("sessioni collegate: " + sessioneAndroid + " <-> " + sessioneWeb);
+                    nomeUtente = message.getFrom();
                     if (users.containsKey(sessioneWeb)) {
                         sessioniInterconnesse.put(sessioneAndroid, sessioneWeb);
                         sessioniInterconnesse.put(sessioneWeb, sessioneAndroid);
+                        users.put(sessioneWeb, nomeUtente);
                         Message confirm = new Message("0002", "Server", "", "Dispositivo collegato!");
                         inviaA(confirm, session);
                         apriChat(sessioneWeb, sessioneAndroid);
@@ -96,13 +96,6 @@ public class ControlloreWebSocketChat {
             }
             case "0002": {
                 broadcastMenoUno(message, session);
-                break;
-            }
-            case "0003": {
-                String androidSession = message.getContent();
-                sessioniInterconnesse.put(session.getId(), androidSession);
-                sessioniInterconnesse.put(androidSession, session.getId());
-                System.out.println("Server pronto a replicare, sessione android: " + androidSession);
                 break;
             }
         }
@@ -118,11 +111,11 @@ public class ControlloreWebSocketChat {
                 e.printStackTrace();
             }
         });
-        String linkedId = sessioniInterconnesse.get(ignore.getId());
-        if (linkedId != null) {
+        String sessioniConnesse = sessioniInterconnesse.get(ignore.getId());
+        if (sessioniConnesse != null) {
             chatEndpoints.forEach(endpoint -> {
                 try {
-                    if (endpoint.session.getId().equals(linkedId)) {
+                    if (endpoint.session.getId().equals(sessioniConnesse)) {
                         endpoint.session.getBasicRemote().sendObject(message);
                     }
                 } catch (Exception e) {
@@ -156,11 +149,25 @@ public class ControlloreWebSocketChat {
 
     private void apriChat(String sessioneWeb, String sessioneAndroid) {
         try {
-            String url = "http://localhost:8080/ChatServer/ChatClient.html?webSession=" + sessioneWeb + "&androidSession=" + sessioneAndroid;
-            java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
-            //return Response.seeOther(new URI(".../ChatClient.html")).build();
+            System.out.println("Id di sessione: " + sessioneWeb);
+            for (ControlloreWebSocketChat endpoint : chatEndpoints) {
+                if (endpoint.session.getId().equals(sessioneWeb)) {
+                    System.out.println("Nome utente: " + nomeUtente);
+                    Message messaggio = new Message(
+                            "0002",
+                            "Benvenuto",
+                            nomeUtente,
+                            "Benvenuto sulla chat web dell'AppParticolare " + nomeUtente
+                    );
+                    inviaA(messaggio, endpoint.session);
+                    Message conferma = new Message("0003", nomeUtente, "", nomeUtente);
+                    inviaA(conferma, endpoint.session);
+                    break;
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }
