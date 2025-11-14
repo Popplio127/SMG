@@ -7,10 +7,13 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.net.URI;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
-import javax.ws.rs.core.Response;
+
+/**
+ * 
+ * @author I_Particolari
+ */
 
 @ServerEndpoint(
         value = "/chat/{username}",
@@ -24,7 +27,6 @@ public class ControlloreWebSocketChat {
     private static Map<String, String> users = new HashMap<>();
     private static Map<String, String> sessioniInterconnesse = new HashMap<>();
     private String nomeUtente;
-    private String nomeSender;
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException, EncodeException {
@@ -48,6 +50,8 @@ public class ControlloreWebSocketChat {
                     message.setFrom(users.get(session.getId()));
                     broadcastMenoUno(message, session);
                     break;
+                case "0003":
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,6 +60,13 @@ public class ControlloreWebSocketChat {
 
     @OnClose
     public void onClose(Session session) throws IOException, EncodeException {
+        for (String sessione : sessioniInterconnesse.values()) {
+            if (sessione.equalsIgnoreCase(session.getId())) {
+                String altroIdDaRimuovere = sessioniInterconnesse.remove(sessione);
+                sessioniInterconnesse.remove(altroIdDaRimuovere);
+                return;
+            }
+        }
         chatEndpoints.remove(this);
         String username = users.remove(session.getId());
         Message message = new Message("0002", "Server", "", username + " Disconnected!");

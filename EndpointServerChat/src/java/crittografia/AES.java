@@ -5,6 +5,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
+/**
+ * 
+ * @author I_Particolari
+ */
 public class AES {
 
     private static final String ALGORITHM = "AES";

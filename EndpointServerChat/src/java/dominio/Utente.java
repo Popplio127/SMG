@@ -1,13 +1,15 @@
 package dominio;
 
-import crittografia.PasswordEncryptConverter;
 import java.io.Serializable;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * 
+ * @author I_Particolari
+ */
 @Entity
 @XmlRootElement
 @Table(name = "UTENTE") 

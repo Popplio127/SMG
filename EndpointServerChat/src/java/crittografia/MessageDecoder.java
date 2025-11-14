@@ -6,6 +6,10 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
+/**
+ * 
+ * @author I_Particolari
+ */
 public class MessageDecoder implements Decoder.Text<Message> {
 
     private static Gson gson = new Gson();

@@ -1,5 +1,9 @@
 package dominio;
 
+/**
+ * 
+ * @author I_Particolari
+ */
 public class Punto {
 
     private int r;

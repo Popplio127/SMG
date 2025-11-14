@@ -7,70 +7,91 @@ import javax.ejb.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-@Path("/tris")
-@Singleton
+/**
+ * 
+ * @author I_Particolari
+ */
+//@Path("/tris")
+//@Singleton
 public class GameTris {
 
     private static String[][] board = new String[3][3];
     private boolean[][] win = new boolean[3][3];
     private String currentPlayer = "X";
-    public boolean gameOver = false;
-    private Gson gson = new Gson();
+    private boolean gameOver = false;
+    //private Gson gson = new Gson();
+    private static GameTris instance = null;
+    private boolean isResetNeccessary = true;
 
-    public GameTris() {
-        resetBoard();
+    private GameTris() {
+        if (isResetNeccessary) {
+            resetBoard();
+        }
+        isResetNeccessary = false;
     }
 
-    private void resetBoard() {
+    private synchronized void resetBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 board[i][j] = "";
                 win[i][j] = false;
             }
         }
-        currentPlayer = "X";
+        currentPlayer = (currentPlayer.equals("X"))? "O" : "X";
         gameOver = false;
     }
 
-    @POST
-    @Path("/turno")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response turno(Punto p) {
+    public synchronized static GameTris getInstance() {
+        if (instance == null) {
+            instance = new GameTris();
+        }
+        return instance;
+    }
+
+//    @POST
+//    @Path("/turno")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+    public synchronized StatoTris turno(Punto p) {
         int r = p.getR();
         int c = p.getC();
-
         if (gameOver || !board[r][c].equals("")) {
-            return Response.ok(gson.toJson(new StatoTris(board, currentPlayer))).build();
+            // return Response.ok(gson.toJson(new StatoTris(board, currentPlayer))).build();
+            return new StatoTris(board, currentPlayer);
         }
         board[r][c] = currentPlayer;
         if (checkWinner() || isBoardFull()) {
             gameOver = true;
         } else {
             currentPlayer = currentPlayer.equals("X") ? "O" : "X";
-            System.out.println("asdoiuad: " + currentPlayer);
+            //System.out.println("asdoiuad: " + currentPlayer);
         }
         StatoTris state = new StatoTris(board, currentPlayer);
         System.out.println(state);
         stampa();
-        return Response.ok(gson.toJson(state)).build();
+        //return Response.ok(gson.toJson(state)).build();
+        System.out.println(state);
+        return state;
     }
+//
+//    @GET
+//    @Path("/reset")
+//    @Produces(MediaType.APPLICATION_JSON)
 
-    @GET
-    @Path("/reset")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response reset() {
+    public synchronized StatoTris reset() {
         resetBoard();
         StatoTris state = new StatoTris(board, currentPlayer);
-        return Response.ok(gson.toJson(state)).build();
+        //return Response.ok(gson.toJson(state)).build();
+        return state;
     }
 
-    @GET
-    @Path("/getWin")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getWin() {
+//    @GET
+//    @Path("/getWin")
+//    @Produces(MediaType.APPLICATION_JSON)
+    public synchronized boolean[][] getWin() {
         System.out.println(win);
-        return Response.ok(gson.toJson(win)).build();
+        //return Response.ok(gson.toJson(win)).build();
+        return win;
     }
 
     private boolean checkWinner() {
@@ -109,7 +130,7 @@ public class GameTris {
     private void stampa() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if(board[i][j].equals("")){
+                if (board[i][j].equals("")) {
                     System.out.println("*");
                 } else {
                     System.out.print(board[i][j]);
@@ -118,4 +139,31 @@ public class GameTris {
             System.out.println("");
         }
     }
+
+    public synchronized boolean isGameOver() {
+        return gameOver;
+    }
+
+    public static synchronized String[][] getBoard() {
+        String[][] copy = new String[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                copy[i][j] = board[i][j];
+            }
+        }
+        return copy;
+    }
+
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public synchronized String getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setIsResetNeccessary(boolean isResetNeccessary) {
+        this.isResetNeccessary = isResetNeccessary;
+    }
+
 }

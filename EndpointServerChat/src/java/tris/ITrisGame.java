@@ -1,13 +1,17 @@
 package tris;
 
 import dominio.Punto;
-import javax.ws.rs.core.Response;
+import dominio.StatoTris;
 
+/**
+ *
+ * @author I_Particolari
+ */
 public interface ITrisGame {
 
-    public Response turno(Punto p);
+    public StatoTris turno(Punto p);
 
-    public Response reset();
-    
-    public Response getWin();
+    public StatoTris reset();
+
+    public boolean[][] getWin();
 }

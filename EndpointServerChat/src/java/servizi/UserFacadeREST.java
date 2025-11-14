@@ -9,6 +9,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+/**
+ * 
+ * @author I_Particolari
+ */
 @Stateless
 @Path("user")
 public class UserFacadeREST extends AbstractFacade<Utente> {

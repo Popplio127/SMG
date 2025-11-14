@@ -5,6 +5,10 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+/**
+ * 
+ * @author I_Particolari
+ */
 @ApplicationPath("api")
 public class ApplicationConfig extends Application {
 
@@ -17,6 +21,5 @@ public class ApplicationConfig extends Application {
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(servizi.UserFacadeREST.class);
-        resources.add(tris.GameTris.class);
     }
 }
