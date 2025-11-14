@@ -1,5 +1,6 @@
 package servizi;
 
+import DownloadApk.ApkDownloader;
 import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.ApplicationPath;
@@ -20,6 +21,7 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(DownloadApk.ApkDownloader.class);
         resources.add(servizi.UserFacadeREST.class);
     }
 }
