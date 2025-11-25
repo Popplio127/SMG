@@ -194,3 +194,13 @@ button:hover {
     display: flex;
     flex-direction: column;
 }
+
+.message.center {
+    display: inline-block;   
+    text-align: center;
+    border-top-right-radius: 0;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 8px 12px;        
+    max-width: 100%;          
+}

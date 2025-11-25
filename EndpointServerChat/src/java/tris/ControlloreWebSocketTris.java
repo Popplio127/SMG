@@ -5,9 +5,12 @@ import crittografia.MessageDecoder;
 import dominio.Message;
 import dominio.Punto;
 import dominio.StatoTris;
+import dominio.TypeMessages;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -46,13 +49,13 @@ public class ControlloreWebSocketTris {
     @OnMessage
     public void onMessage(Session session, Message message) {
         switch (message.getType()) {
-            case "join":
+            case TypeMessages.RICHIESTA_JOIN:
                 gestisciJoin(message.getFrom());
                 break;
-            case "mossa":
+            case TypeMessages.RICHIESTA_MOSSA:
                 gestisciMossa(session.getId(), message);
                 break;
-            case "reset":
+            case TypeMessages.RICHIESTA_RESET:
                 gestisciReset(session.getId());
                 break;
             default:
@@ -160,7 +163,8 @@ public class ControlloreWebSocketTris {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                sb.append(statoTris.getBoard()[i][j] + ";");
+                sb.append(statoTris.getBoard()[i][j]);
+                sb.append(";");
             }
         }
         sb.append(statoTris.getCurrentPlayer());
@@ -170,7 +174,7 @@ public class ControlloreWebSocketTris {
     private synchronized void inviaStato() {
         trisEndpoints.forEach(endpoint -> {
             try {
-                endpoint.session.getBasicRemote().sendObject(new Message("stato", endpoint.session.getId(), "", buildState(new StatoTris(game.getBoard(), game.getCurrentPlayer()))));
+                endpoint.session.getBasicRemote().sendObject(new Message(TypeMessages.INVIO_STATO, endpoint.session.getId(), "", buildState(new StatoTris(game.getBoard(), game.getCurrentPlayer())), LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()));
             } catch (IOException ex) {
                 Logger.getLogger(ControlloreWebSocketTris.class.getName()).log(Level.SEVERE, null, ex);
             } catch (EncodeException ex) {
@@ -183,7 +187,7 @@ public class ControlloreWebSocketTris {
         trisEndpoints.forEach(endpoint -> {
             if (endpoint.session.getId().equalsIgnoreCase(sessionID)) {
                 try {
-                    endpoint.session.getBasicRemote().sendObject(new Message("errore", sessionID, "", errore));
+                    endpoint.session.getBasicRemote().sendObject(new Message(TypeMessages.INVIO_ERRORE, sessionID, "", errore, LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()));
                 } catch (IOException ex) {
                     Logger.getLogger(ControlloreWebSocketTris.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (EncodeException ex) {
@@ -197,7 +201,7 @@ public class ControlloreWebSocketTris {
         if (trisEndpoints.size() > 1) {
             trisEndpoints.forEach(endpoint -> {
                 try {
-                    endpoint.session.getBasicRemote().sendObject(new Message("info", endpoint.session.getId(), "", comunicazione));
+                    endpoint.session.getBasicRemote().sendObject(new Message(TypeMessages.INVIO_MESSAGGIO_INFORMAZIONE, endpoint.session.getId(), "", comunicazione, LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()));
                 } catch (IOException ex) {
                     Logger.getLogger(ControlloreWebSocketTris.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (EncodeException ex) {
@@ -211,7 +215,7 @@ public class ControlloreWebSocketTris {
         trisEndpoints.forEach(endpoint -> {
             if (endpoint.session.equals(session)) {
                 try {
-                    endpoint.session.getBasicRemote().sendObject(new Message("stato", session.getId(), "", stato));
+                    endpoint.session.getBasicRemote().sendObject(new Message(TypeMessages.INVIO_STATO, session.getId(), "", stato, LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()));
                 } catch (IOException ex) {
                     Logger.getLogger(ControlloreWebSocketTris.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (EncodeException ex) {
@@ -225,7 +229,7 @@ public class ControlloreWebSocketTris {
         trisEndpoints.forEach(endpoint -> {
             if (endpoint.session.getId().equals(sessionID)) {
                 try {
-                    endpoint.session.getBasicRemote().sendObject(new Message("ruolo", session.getId(), "", ruolo));
+                    endpoint.session.getBasicRemote().sendObject(new Message(TypeMessages.INVIO_RUOLO, session.getId(), "", ruolo, LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()));
                 } catch (IOException ex) {
                     Logger.getLogger(ControlloreWebSocketTris.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (EncodeException ex) {
@@ -239,7 +243,7 @@ public class ControlloreWebSocketTris {
         trisEndpoints.forEach(endpoint -> {
             if (endpoint.session.getId().equalsIgnoreCase(sessionID)) {
                 try {
-                    session.getBasicRemote().sendObject(new Message("session", session.getId(), "", session.getId()));
+                    session.getBasicRemote().sendObject(new Message(TypeMessages.INVIO_SESSIONE, session.getId(), "", session.getId(), LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()));
                 } catch (IOException ex) {
                     Logger.getLogger(ControlloreWebSocketTris.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (EncodeException ex) {
@@ -264,7 +268,7 @@ public class ControlloreWebSocketTris {
         System.out.println(sb.toString());
         trisEndpoints.forEach(endpoint -> {
             try {
-                endpoint.session.getBasicRemote().sendObject(new Message("win", endpoint.session.getId(), "", sb.toString()));
+                endpoint.session.getBasicRemote().sendObject(new Message(TypeMessages.INVIO_TABELLA_WIN, endpoint.session.getId(), "", sb.toString(), LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()));
             } catch (IOException ex) {
                 Logger.getLogger(ControlloreWebSocketTris.class.getName()).log(Level.SEVERE, null, ex);
             } catch (EncodeException ex) {

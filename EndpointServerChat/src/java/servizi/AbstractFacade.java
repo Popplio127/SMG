@@ -1,13 +1,9 @@
 package servizi;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaQuery;
 
-/**
- * 
- * @author I_Particolari
- */
 public abstract class AbstractFacade<T> {
 
     private Class<T> entityClass;
@@ -20,6 +16,7 @@ public abstract class AbstractFacade<T> {
 
     public void create(T entity) {
         getEntityManager().persist(entity);
+        System.out.println("Abbate");
     }
 
     public void edit(T entity) {
@@ -35,13 +32,14 @@ public abstract class AbstractFacade<T> {
     }
 
     public List<T> findAll() {
-        CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
+
     }
 
     public List<T> findRange(int[] range) {
-        CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         q.setMaxResults(range[1] - range[0] + 1);
@@ -50,10 +48,11 @@ public abstract class AbstractFacade<T> {
     }
 
     public int count() {
-        CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
+
 }

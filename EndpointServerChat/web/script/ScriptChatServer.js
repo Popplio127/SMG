@@ -11,18 +11,22 @@ let ws;
 function addMessage(text, type, sender) {
     if (!chatDiv)
         return;
+
     const div = document.createElement("div");
-    if (sender === connectedUser) {
+
+    if (type === "center") {
+        div.className = "message center";
+    } else if (sender === connectedUser) {
         div.className = "message right";
-    } else if (type === "server") {
-        div.className = "message server";
     } else {
         div.className = "message left";
     }
+
     div.textContent = text;
     chatDiv.appendChild(div);
     chatDiv.scrollTop = chatDiv.scrollHeight;
 }
+
 
 function generaQr(sessionId) {
     if (!qrImg || !sessionId)
@@ -49,7 +53,7 @@ function inviaMessaggio() {
         addMessage(connectedUser + ": " + text, "chat", connectedUser);
         msgInput.value = "";
     } else if (!connectedUser) {
-        addMessage("⚠ Nessun dispositivo connesso!", "server");
+        addMessage("⚠ Nessun dispositivo connesso!", "center");
     }
 }
 
@@ -57,7 +61,7 @@ if (chatDiv) {
     ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
-        addMessage("Connesso al server WebSocket", "server");
+        addMessage("Connesso al server WebSocket", "center");
         const initMessage = {
             type: "0001",
             from: username,
@@ -74,7 +78,7 @@ if (chatDiv) {
             const msg = JSON.parse(event.data);
             switch (msg.type) {
                 case "0001":
-                    addMessage("Sessione generata. Attendere connessione dispositivo...", "server");
+                    addMessage("Sessione generata. Attendere connessione dispositivo...", "center");
                     generaQr(msg.content);
                     break;
 
@@ -86,8 +90,12 @@ if (chatDiv) {
 
                 case "0003":
                     connectedUser = msg.from;
-                    addMessage("Connessione avvenuta con successo! Utente connesso: " + connectedUser, "server");
+                    addMessage("Connessione avvenuta con successo! Utente connesso: " + connectedUser, "center");
                     toggleInput(true);
+                    break;
+
+                case "0004":
+                    addMessage(msg.content, "center");
                     break;
             }
         } catch (err) {
@@ -98,7 +106,7 @@ if (chatDiv) {
     ws.onclose = () => addMessage("Connessione chiusa", "server");
     ws.onerror = (err) => {
         console.error("WebSocket error:", err);
-        addMessage("Errore di connessione", "server");
+        addMessage("Errore di connessione", "center ");
     };
     sendBtn.addEventListener("click", inviaMessaggio);
     msgInput.addEventListener("keydown", (event) => {

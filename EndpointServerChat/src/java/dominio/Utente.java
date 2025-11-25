@@ -7,12 +7,12 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * 
+ *
  * @author I_Particolari
  */
 @Entity
 @XmlRootElement
-@Table(name = "UTENTE") 
+@Table(name = "UTENTE")
 public class Utente implements Serializable {
 
     @Id
@@ -28,6 +28,14 @@ public class Utente implements Serializable {
         this.id = id;
         this.username = username;
         this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -46,17 +54,9 @@ public class Utente implements Serializable {
         this.password = password;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + '}';
+        return "Utente{" + "id=" + id + ", username=" + username + ", password=" + password + '}';
     }
 
 }
